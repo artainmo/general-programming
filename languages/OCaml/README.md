@@ -49,7 +49,6 @@ if 1 < 2 then
 else
 	4
 ```
-It is important to know that each expression in OCaml has one type. Each expression returns a value which also has a type, sometimes it is the trivial unit type `()`.
 
 While other languages usually use a switch statement, OCaml has the 'match' statement. It looks for example like this:
 ```
@@ -83,10 +82,10 @@ Tuples can be useful to let functions return multiple values.
 
 Lists are also used extensively in OCaml programs. A list is a sequence of immutable values of the same type.<br>
 There are two constructors, one like this `[element1; element2;]` and another like this `element1 :: element2 :: []`.<br>
+Lists can be joined together using `list1 @ list2`, similarly a value can be appended to the end of a list like this `list @ [newValue]`. However appending at end of lists demands to copy and joining two lists which is more demanding than adding a value to the front of a list like this `newValue :: list1`.<br>
 Lists can also contain tuples or other lists as long as all its elements have the same type.
 
-A disjoint union, or union for short, represents the union of several different types, where each of the parts is given an
-unique, explicit name.<br>
+A disjoint union, or union for short, represents the union of several different types, where each of the parts is given a unique, explicit name.<br>
 OCaml allows the definition of exact and open union types. The following syntax is used for an exact union type:
 ```
 type unionTypeName = 
@@ -157,7 +156,7 @@ The 'input_char' function reads a single character, and the 'input_line' functio
 
 If the channel is a normal file, there are several functions that can modify the position in the file. The 'seek_out' and 'seek_in' function change the file position. The 'pos_out' and 'pos_in' function return the current position in the file. The 'out_channel_length' and 'in_channel_length' return the total number of characters in the file.
 
-The Buffer library module provides string buffers that can, in some cases, be significantly more efficient than using the native string operations. String buffers have type 'Buffer.t'. The type is abstract, meaning that the specific implementation of the buffer is not specified. Buffers are created with the 'Buffer.create' function. Different functions also exist to clear, add text to buffer or output the buffer.
+The Buffer library module provides string buffers that can, in some cases, be significantly more efficient than using the native string operations. String buffers have type 'Buffer.t'. Buffers are created with the 'Buffer.create' function. Different functions also exist to clear, add text to buffer or output the buffer.
 
 OCaml has the function 'fprintf' which allows formatted output and is similar to the 'printf' function in C. For example, the following statement prints a line containing an integer 'i' and a string 's': `fprintf stdout "Number = %d, String = %s\n" i s`.<br>
 The Printf module also provides formatted output to a string buffer. The 'bprintf' function takes a printf-style format string, and formats output to a buffer.
@@ -171,7 +170,7 @@ Unlike C programs, OCaml programs do not have a 'main' function. When an OCaml p
 
 OCaml uses files as a basic unit for providing data hiding and encapsulation. Each file can be assigned an 'interface' that declares types for that file. An interface for a file 'filename.ml' is defined in a file with same name named 'filename.mli'. An interface should declare types for each of the values that are publicly accessible in a module, as well as any needed type declarations or definitions. '.mli' files need to be compiled but don't need to be specified during linking.
 
-At top of file you can 'open' a library, which means its implementations become directly accessible. For example by using `open Array` one can use the `create` function to create an array without the 'open' the same function is found like this `Array.open`. The use of 'open' is not recommended as it can easily lead to errors from different implementations with same name leading to ambiguity.
+At top of file you can 'open' a library, which means its implementations become directly accessible. For example by using `open Array` one can use the `create` function to create an array. Without the 'open' the same function is found like this `Array.open`. The use of 'open' is not recommended as it can easily lead to errors from different implementations with same name leading to ambiguity.
 
 The 'ocamldebug' program can be used to debug a program compiled with 'ocamlc'. The 'ocamldebug' program is a little like the 'GNU gdb' program. It allows breakpoints to be set. When a breakpoint is reached, control is returned to the debugger so that program variables can be examined. To use 'ocamldebug', the program must be compiled with the `-g` flag. The debugger is invoked like this `ocamldebug ./programExecutable`. After the debugger has been launched it will prompt you for commands that allow you to execute and visualize the program's variable at a specific time point.
 
