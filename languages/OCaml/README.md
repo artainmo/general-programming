@@ -2,6 +2,16 @@
 
 ## Table of contents
 - [Free tutorials](#Free-tutorials)
+  - [Introduction](#Introduction)
+  - [Data types and conditions](#Data-types-and-conditions)
+  - [Variables, Functions, Looping](#variables-functions-looping)
+  - [Tuples, Lists and Unions](#tuples-lists-and-unions)
+  - [Reference cells](#reference-cells)
+  - [Records, Arrays, and String](#records-arrays-and-string)
+  - [Exceptions](#Exceptions)
+  - [Input and Output](#Input-and-Output)
+  - [Files, Compilation Units, and Programs](#files-compilation-units-and-programs)
+  - [OCaml Modules](#OCaml-Modules)
 - [Resources](#Resources)
 
 ## Free tutorials
