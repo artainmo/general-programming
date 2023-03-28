@@ -38,9 +38,8 @@ if 1 < 2 then
 	3 + 7
 else
 	4
-
-It is important to know that each expression in OCaml has one type. Each expression returns a value which also has a type, sometimes it is the trivial unit type `()`.
 ```
+It is important to know that each expression in OCaml has one type. Each expression returns a value which also has a type, sometimes it is the trivial unit type `()`.
 
 While other languages usually use a switch statement, OCaml has the 'match' statement. It looks for example like this:
 ```
@@ -134,7 +133,55 @@ Examples of automatically triggered exceptions that you could manually raise too
 In some cases it is useful to define a 'finally' cause when 'trying' an exception. The purpose of a 'finally' clause is to execute some code (usually to clean up) after an expression is evaluated, no matter if the exception was raised or not.
 
 ### Input and Output
+At program startup, there are three channels open, corresponding to the standard file descriptors in Unix, who allow reading and writing in terminal, namely the 'stdin' is the standard input stream, 'stdout' is the standard
+output stream, and 'stderr' is the standard output stream for error messages.
 
+In OCaml the I/O library starts by defining two data types, namely 'in_channel' and 'out_channel' who represent the channels from which characters can be read or written respectively.
+
+To open a file we can use the function 'open_out' for writing text data and 'open_out_bin' for writing binary data. Similarly for opening and reading files we can use the functions 'open_in' and 'open_in_bin'.<br>
+The 'open_out_gen' and 'open_in_gen' functions can be used to perform more kinds of file openings such as for appending, create if not exist, empty file if it already exist, fail if file already exist...<br>
+Channels are not closed automatically. The closing functions 'close_out' and 'close_in' are used for explicitly closing the channels.
+
+There are several functions for writing values to an 'out_channel'. The 'output_char' writes a single character to the channel, and the 'output_string' writes all the characters in a string to the channel. The 'output' function can be used to write part of a string to the channel.<br>
+The 'input_char' function reads a single character, and the 'input_line' function reads an entire line, discarding the line terminator. The input functions raise the exception 'End_of_file' if the end of the file is reached before the entire value could be read.
+
+If the channel is a normal file, there are several functions that can modify the position in the file. The 'seek_out' and 'seek_in' function change the file position. The 'pos_out' and 'pos_in' function return the current position in the file. The 'out_channel_length' and 'in_channel_length' return the total number of characters in the file.
+
+The Buffer library module provides string buffers that can, in some cases, be significantly more efficient than using the native string operations. String buffers have type 'Buffer.t'. The type is abstract, meaning that the specific implementation of the buffer is not specified. Buffers are created with the 'Buffer.create' function. Different functions also exist to clear, add text to buffer or output the buffer.
+
+OCaml has the function 'fprintf' which allows formatted output and is similar to the 'printf' function in C. For example, the following statement prints a line containing an integer 'i' and a string 's': `fprintf stdout "Number = %d, String = %s\n" i s`.<br>
+The Printf module also provides formatted output to a string buffer. The 'bprintf' function takes a printf-style format string, and formats output to a buffer.
+
+The Scanf module is similar to Printf, but for input instead of output. The 'fscanf' function reads from an input channel, the 'sscanf' function reads from a string, and the 'scanf' function reads from the standard input.
+
+### Files, Compilation Units, and Programs
+Learn more about compilation in the [introduction](#Introduction).
+
+Unlike C programs, OCaml programs do not have a 'main' function. When an OCaml program is evaluated, all the statements in the implementation files are evaluated in order.
+
+OCaml uses files as a basic unit for providing data hiding and encapsulation. Each file can be assigned an 'interface' that declares types for that file. An interface for a file 'filename.ml' is defined in a file with same name named 'filename.mli'. An interface should declare types for each of the values that are publicly accessible in a module, as well as any needed type declarations or definitions. '.mli' files need to be compiled but don't need to be specified during linking.
+
+At top of file you can 'open' a library, which means its implementations become directly accessible. For example by using `open Array` one can use the `create` function to create an array without the 'open' the same function is found like this `Array.open`. The use of 'open' is not recommended as it can easily lead to errors from different implementations with same name leading to ambiguity.
+
+The 'ocamldebug' program can be used to debug a program compiled with 'ocamlc'. The 'ocamldebug' program is a little like the 'GNU gdb' program. It allows breakpoints to be set. When a breakpoint is reached, control is returned to the debugger so that program variables can be examined. To use 'ocamldebug', the program must be compiled with the `-g` flag. The debugger is invoked like this `ocamldebug ./programExecutable`. After the debugger has been launched it will prompt you for commands that allow you to execute and visualize the program's variable at a specific time point.
+
+### OCaml Modules
+As we saw in the previous chapter, programs can be divided into parts that can be implemented in files, and each file can be given an interface that specifies what its public types and values are.<br>
+Files are not the only way to partition a program, OCaml also provides a 'module' system that allows programs to be partitioned even within a single file. There are three key parts in the module system: 'signatures', 'structures', and 'functors', where 'signatures' correspond to interfaces, 'structures' correspond to implementations, and 'functors' are functions over structures. 
+
+Named structures are defined with the module and struct keywords using the following syntax: `module ModuleName = struct implementation end`. The module name  must begin with an uppercase letter. The implementation can include any definition that might occur in a .ml file.
+
+As we saw before each '.ml' file contains implementations that can be linked to an interface defined a '.mli' file. Modules allow the same, the implementations are defined in a 'structure' and the interface is defined in a 'signature'.<br>
+A signature must have the same name as the structure it is linked to and be defined like that: `module type ModuleName = sig interface end`.<br>
+The values defined inside the signature will be accessible outside the module like this `ModuleName.value`.
+
+The 'let module' expression is frequently used for creating modules for local use. It is defined like that `let module ModuleName = module_expression in body_expression`, whereby 'module_expression' refers to the content of the module and 'body_expression' refers to the Ocaml code that would have access to that module.
+
+'include' keyword allows to include the contents of one 'structure' or 'signature' into another.<br>
+Modules can also be nested.
+
+All the module references we’ve seen up to this point have been to specific, constant modules. It’s also possible in OCaml to write modules that are parameterized by other modules. To be used, 'functors' are instantiated by supplying actual module arguments for the functor’s module parameters (similar to supplying arguments in a function call). A functor parameter must be a module, or another functor.<br>
+It is defined like this `module ModuleName type (Structure: Signature) = struct implementations end` whereby inside the implementations the module given as argument can be accessed.
 
 ## Resources
 [Introduction to Objective Caml](http://courses.cms.caltech.edu/cs134/cs134b/book.pdf)<br>
