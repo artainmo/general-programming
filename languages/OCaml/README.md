@@ -20,7 +20,7 @@ OCaml is a functional programming language. Functional meaning it is written usi
 
 An ocaml interactive shell can be launched with the command `ocaml`. Its commands should end with `;;` while this is not the case in a compiled OCaml program.
 
-OCaml programs should be written inside '.ml' source files. Two compilers exist, 'ocamlc' compiles to byte-code and 'ocamlopt' to machine code. The machine code executes faster but takes more time to compile.<br>
+OCaml programs should be written inside '.ml' source files. Two compilers exist, 'ocamlc' compiles to byte-code and 'ocamlopt' to machine code. The machine code executes faster but takes more time to compile, because it is the final code while byte-code is an intermediate code.<br>
 `ocamlc -g -c file.ml` will produce 'file.cmo' while 'ocamlopt' would procude 'file.cmx'. `-g` is used for debug info to be included in output file. Afterwards the output files will have to be linked like this `ocamlc -g -o executableName file1.cmo file2.cmo` to form an executable that can be executed `./executableName`.
 
 Comments are written in between `(*` and `*)`.
