@@ -18,7 +18,15 @@
 ### Introduction
 OCaml is a functional programming language. Functional meaning it is written using functions over objects/classes. Although object oriented features exist in OCaml they are considered bad practice and rarely used in this language. 
 
-An ocaml interactive shell can be launched with the command `ocaml`. Its commands should end with `;;` while this is not the case in a compiled OCaml program.
+An OCaml interactive shell can be launched with the command `ocaml`. The end of expressions should be indicated with `;;`.<br>
+In OCaml programs 'let' bindings or different functions are defined to separate expressions. Semicolons can also separate expressions however they are not the convention in OCaml besides when semicolons are used to separate expressions on the same line.<br>
+In OCaml, let bindings are used to bind a name to a value. A let binding has the following syntax: `let <name> = <expression> in <body>` where 'name' is the name of the binding, 'expression' is the value to which 'name' is bound, and 'body' is an expression that uses 'name'.<br>
+We can also use multiple let bindings to bind multiple names to values:
+```
+let x = 1 + 2 in
+let y = 3 + 4 in
+print_int (x + y)
+```
 
 OCaml programs should be written inside '.ml' source files. Two compilers exist, 'ocamlc' compiles to byte-code and 'ocamlopt' to machine code. The machine code executes faster but takes more time to compile, because it is the final code while byte-code is an intermediate code.<br>
 `ocamlc -g -c file.ml` will produce 'file.cmo' while 'ocamlopt' would procude 'file.cmx'. `-g` is used for debug info to be included in output file. Afterwards the output files will have to be linked like this `ocamlc -g -o executableName file1.cmo file2.cmo` to form an executable that can be executed `./executableName`.
@@ -46,8 +54,12 @@ Conditions are written like this:
 ```
 if 1 < 2 then
 	3 + 7
-else
-	4
+else if 1 == 3
+	9
+else begin
+	Printf.printf "Error";
+	exit 0
+end (*Because the else close contains multiple expressions it needs to be closed between 'begin' and 'end' keywords*)
 ```
 
 While other languages usually use a switch statement, OCaml has the 'match' statement. It looks for example like this:
@@ -158,7 +170,7 @@ If the channel is a normal file, there are several functions that can modify the
 
 The Buffer library module provides string buffers that can, in some cases, be significantly more efficient than using the native string operations. String buffers have type 'Buffer.t'. Buffers are created with the 'Buffer.create' function. Different functions also exist to clear, add text to buffer or output the buffer.
 
-OCaml has the function 'fprintf' found in module 'Printf' which allows formatted output and is similar to the 'printf' function in C. For example, the following statement prints a line containing an integer 'i' and a string 's': `Printf.fprintf stdout "Number = %d, String = %s\n" i s`.<br>
+OCaml has the function 'fprintf' found in module 'Printf' which allows formatted output. For example, the following statement prints a line containing an integer 'i' and a string 's': `Printf.fprintf stdout "Number = %d, String = %s\n" i s`. When printing in terminal instead of using `fprintf stdout "message"` one can use `printf "message"`.<br>
 The Printf module also provides formatted output to a string buffer. The 'bprintf' function takes a printf-style format string, and formats output to a buffer.
 
 The Scanf module is similar to Printf, but for input instead of output. The 'fscanf' function reads from an input channel, the 'sscanf' function reads from a string, and the 'scanf' function reads from the standard input.
