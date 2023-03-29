@@ -48,7 +48,12 @@ Strings also support random access. The expression `s.[i]` returns the i’th fr
 The String module (see Section 8.3) also defines many functions to manipulate strings, including the 'String.length' function, which returns the length of a string and the 'String.sub' function, which returns a substring.
 
 Bools are a binary data type holding the value 'true' or 'false'.<br>
-Logical operators compare two values and return a bool. Such operators are for example ==, !=, <, <=, >, >= but also = and <> which means 'equal to' and 'not equal to' instead of 'identical' to.<br> 
+Logical operators compare two values and return a bool. Such operators are for example ==, !=, <, <=, >, >= but also = and <> which means 'equal to' and 'not equal to' instead of 'identical' to.<br>
+For example:
+```
+"foo" == "foo" (*Equals to false because they are not identical meaning they don't lie on same memory space*)
+"foo" = "foo" (*Equals to true as we would expect*)
+```
 The `||` (or)  and `&&` (and) operators can also be used in conditions.<br>
 Conditions are written like this:
 ```
