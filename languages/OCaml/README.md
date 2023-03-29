@@ -158,7 +158,7 @@ If the channel is a normal file, there are several functions that can modify the
 
 The Buffer library module provides string buffers that can, in some cases, be significantly more efficient than using the native string operations. String buffers have type 'Buffer.t'. Buffers are created with the 'Buffer.create' function. Different functions also exist to clear, add text to buffer or output the buffer.
 
-OCaml has the function 'fprintf' which allows formatted output and is similar to the 'printf' function in C. For example, the following statement prints a line containing an integer 'i' and a string 's': `fprintf stdout "Number = %d, String = %s\n" i s`.<br>
+OCaml has the function 'fprintf' found in module 'Printf' which allows formatted output and is similar to the 'printf' function in C. For example, the following statement prints a line containing an integer 'i' and a string 's': `Printf.fprintf stdout "Number = %d, String = %s\n" i s`.<br>
 The Printf module also provides formatted output to a string buffer. The 'bprintf' function takes a printf-style format string, and formats output to a buffer.
 
 The Scanf module is similar to Printf, but for input instead of output. The 'fscanf' function reads from an input channel, the 'sscanf' function reads from a string, and the 'scanf' function reads from the standard input.
