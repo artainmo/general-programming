@@ -137,7 +137,7 @@ The syntax for a tuple is a sequence of expressions separated by commas. For exa
 Tuples can be useful to let functions return multiple values.
 
 Lists are also used extensively in OCaml programs. A list is a sequence of immutable values of the same type.<br>
-There are two constructors, one like this `[element1; element2;]` and another like this `element1 :: element2 :: []`.<br>
+There are two constructors, one like this `[element1; element2; element3]` and another like this `element1 :: element2 :: []`.<br>
 Lists can be joined together using `list1 @ list2`, similarly a value can be appended to the end of a list like this `list @ [newValue]`. However appending at end of lists demands to copy and joining two lists which is more demanding than adding a value to the front of a list like this `newValue :: list1`.<br>
 Lists can also contain tuples or other lists as long as all its elements have the same type.
 
