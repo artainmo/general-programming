@@ -171,7 +171,7 @@ And here is how we define a record value of that type:
 let jason = {
 	name = "Jason";
 	height = 6.25;
-	phone = "626-555-1212"
+	phone = "626-555-1212";
 	salary = 50.0
 }
 ```
