@@ -32,7 +32,7 @@ shift + cmd + d -> split new horizontal window
 cmd + w -> close window
 cmd + n -> create new terminal window
 $? -> view return of last program
-grep -> often used combined with a pipe to take lines/words that contain letter/word you want to grep/find
+grep -> often used combined with a pipe to find lines/words that contain word you want to grep/find. For example if you want to verify if a specific file exists in current directory you could do `ls | grep "main"`
 wc -l -> often used in combination with pipe to count lines from given input
 ulimit -a -> Indicates all computer resource limits for currently opened shell
 ulimit -n -> Limits max number of file descriptors, can be used to test non-closed file descriptors
