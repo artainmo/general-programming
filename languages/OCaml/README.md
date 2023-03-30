@@ -3,6 +3,7 @@
 ## Table of contents
 - [Free tutorials](#Free-tutorials)
   - [Introduction](#Introduction)
+  - [Separation of commands](#Separation-of-commands)
   - [Data types and conditions](#Data-types-and-conditions)
   - [Variables, Functions, Looping](#variables-functions-looping)
   - [Tuples, Lists and Unions](#tuples-lists-and-unions)
@@ -18,20 +19,58 @@
 ### Introduction
 OCaml is a functional programming language. Functional meaning it is written using functions over objects/classes. Although object oriented features exist in OCaml they are considered bad practice and rarely used in this language. 
 
-An OCaml interactive shell can be launched with the command `ocaml`. The end of expressions should be indicated with `;;`.<br>
-In OCaml programs 'let' bindings or different functions are defined to separate expressions. Semicolons can also separate expressions however they are not the convention in OCaml besides when semicolons are used to separate expressions on the same line.<br>
-In OCaml, let bindings are used to bind a name to a value. A let binding has the following syntax: `let <name> = <expression> in <body>` where 'name' is the name of the binding, 'expression' is the value to which 'name' is bound, and 'body' is an expression that uses 'name'.<br>
-We can also use multiple let bindings to bind multiple names to values:
-```
-let x = 1 + 2 in
-let y = 3 + 4 in
-print_int (x + y)
-```
-
 OCaml programs should be written inside '.ml' source files. Two compilers exist, 'ocamlc' compiles to byte-code and 'ocamlopt' to machine code. The machine code executes faster but takes more time to compile, because it is the final code while byte-code is an intermediate code.<br>
 `ocamlc -g -c file.ml` will produce 'file.cmo' while 'ocamlopt' would procude 'file.cmx'. `-g` is used for debug info to be included in output file. Afterwards the output files will have to be linked like this `ocamlc -g -o executableName file1.cmo file2.cmo` to form an executable that can be executed `./executableName`.
 
 Comments are written in between `(*` and `*)`.
+
+### Separation of commands
+An OCaml interactive shell can be launched with the command `ocaml`. The end of expressions should be indicated with `;;`.<br>
+
+In OCaml programs however separating commands is more complicated because whitespace and line-returns are not able to split commands.<br>
+'let' bindings or function definitions are the convention for separating expressions.<br>
+In OCaml, 'let' bindings are used to bind a name to a value. A 'let' binding has the following syntax: `let <name> = <expression>` where 'name' is the name of the binding and can equal to `()` if you don't want to actually bind to a name, 'expression' is the value to which 'name' is bound.<br>
+In the following example an error occurs because the function's last expression doesn't get separated with the expression that follows it.
+```
+let stop code =
+	exit code
+
+let x = 10 in let y = x + 1 in Printf.prinf "%d %d" x y
+```
+Because in OCaml whitespace and line-returns do not split commands the above code is similar to:
+```
+let stop code =
+	exit code (let x = 10 in let y = x + 1 in Printf.prinf "%d %d" x y)
+```
+Which creates an error because the 'exit' function should only have one argument.<br>
+However using 'let' binding we can correctly separate the commands:
+```
+let stop code =
+	exit code
+
+let () =
+	let x = 10 in let y = x + 1 in Printf.prinf "%d %d" x y
+```
+`let x = 10 in let y = x + 1 in Printf.prinf "%d %d" x y` is an expression because it uses the 'in' keyword. The 'in' keyword splits commands in one expression and allows the declared variable in one command to be usable in one of the next commands. Using `let () =` we can bind this expression to 'let' which allows separation of expressions.<br>
+`;;` can also separate expressions in programs like they do in the interactive shell however they are not the convention in OCaml. Here is an example of its use:
+```
+let stop code =
+	exit code
+;;
+
+let x = 10 in let y = x + 1 in Printf.prinf "%d %d" x y
+```
+A single semicolon can split commands within one expression. For example:
+```
+let stop code =
+	Printf.printf "stopping the program with code %d" code ; exit code
+```
+As whitespace is not relevant for the OCaml compiler it can also be written like this:
+```
+let stop code =
+	Printf.printf "stopping the program with code %d" code; 
+	exit code
+```
 
 ### Data types and conditions
 In ocaml the following variable types exist: unit, int, char, float, bool, string. Type inference allows automatic type deduction without the need to explicitly specify the type.
@@ -183,7 +222,9 @@ The Scanf module is similar to Printf, but for input instead of output. The 'fsc
 ### Files, Compilation Units, and Programs
 Learn more about compilation in the [introduction](#Introduction).
 
-Unlike C programs, OCaml programs do not have a 'main' function. When an OCaml program is evaluated, all the statements in the implementation files are evaluated in order.
+Unlike C programs, OCaml programs do not have a 'main' function. When an OCaml program is evaluated, all the statements in the implementation files are evaluated in order.<br>
+OCaml is vaguely like a scripting language in that any top-level expressions are evaluated when you start up the program. It's conventional to have a function named 'main' that invokes the main work of your program. But it's not necessary at all.<br>
+Expressions are evaluated in the order that the OCaml files appeared in when they were linked into an executable.
 
 OCaml uses files as a basic unit for providing data hiding and encapsulation. Each file can be assigned an 'interface' that declares types for that file. An interface for a file 'filename.ml' is defined in a file with same name named 'filename.mli'. An interface should declare types for each of the values that are publicly accessible in a module, as well as any needed type declarations or definitions. '.mli' files need to be compiled but don't need to be specified during linking.
 
@@ -211,3 +252,4 @@ It is defined like this `module ModuleName type (Structure: Signature) = struct 
 
 ## Resources
 [Introduction to Objective Caml](http://courses.cms.caltech.edu/cs134/cs134b/book.pdf)<br>
+[stackoverflow - understand expression separation](https://stackoverflow.com/questions/75887106/prior-function-definition-makes-let-binding-fail/75887763#75887763)
