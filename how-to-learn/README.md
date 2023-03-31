@@ -10,3 +10,8 @@ Advice should also be given about researching the necessary information or learn
 Also talk about the grepper plugin and overall importance of google search.
 
 Also have notes surrounding researching while coding. Talk about chatGPT, stackOverflow, GeeksForGeeks, medium, official documentation... On medium if an article is not accessible try opening it in private browser instead.
+
+You can ask very specific programming questions to chatGPT. Don't be afraid to even add your specific code and error messages within your requests. If you are unsure about what chatGPT is recommending research on google if what he is saying is correct.
+On chatGPT, if on free tier it does not want to answer anymore. Wait a little and refresh the whole app and try again.<br>
+
+If you cannot find an answer using chatGPT nor Google, last resort is to ask your question on StackOverflow. Answer can come rather quickly after one hour. Make sure to be consice in your question while still giving all the necessary informations, such as showing your codes, what you tried, your conclusions based on that...
