@@ -181,7 +181,8 @@ With its values being accessible like that `jason.height` for example. The 'sala
 Arrays are fixed-size vectors of values whereby all the values must have the same type, can be accessed and modified. They are created with the following syntax `let arrayName = [| element1; element2; element3 |]`. The values it contains are accessed like this `arrayName.(3)` whereby we access value at index 3. And values are updated like this `arrayName.(3) <- newValue`.<br>
 The Array module also contains functions for arrays such as `Array.length arrayName`.
 
-Strings are like arrays of characters. A string can be defined like this `let stringName = "Jason"`. Its elements accessed like this `stringName.[3]` whereby we access the character at index 3. And characters are updated like this `stringName.[3] <- 's'`.<br>
+Strings are like arrays of characters. A string can be defined like this `let stringName = "Jason"`. Its elements accessed like this `stringName.[3]` whereby we access the character at index 3.<br>
+In OCaml, strings are immutable, which means that you cannot change the value of a character in a string directly. However, you can create a new string with the updated character.<br>
 The String module also contains functions for strings such as `String.length stringName`.
 
 ### Exceptions
