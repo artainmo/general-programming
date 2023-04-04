@@ -1,7 +1,7 @@
 # OCaml
 
 ## Table of contents
-- [Free tutorials](#Free-tutorials)
+- [OCaml Free tutorials](#OCaml-Free-tutorials)
   - [Introduction](#Introduction)
   - [Separation of commands](#Separation-of-commands)
   - [Data types and conditions](#Data-types-and-conditions)
@@ -13,9 +13,10 @@
   - [Input and Output](#Input-and-Output)
   - [Files, Compilation Units, and Programs](#files-compilation-units-and-programs)
   - [OCaml Modules](#OCaml-Modules)
+- [Ocsigen Free tutorials](#Ocsigen-Free-tutorials)
 - [Resources](#Resources)
 
-## Free tutorials
+## OCaml Free tutorials
 ### Introduction
 OCaml is a functional programming language. Functional meaning it is written using functions over objects/classes. Although object oriented features exist in OCaml they are considered bad practice and rarely used in this language. 
 
@@ -250,6 +251,63 @@ Modules can also be nested.
 
 All the module references we’ve seen up to this point have been to specific, constant modules. It’s also possible in OCaml to write modules that are parameterized by other modules. To be used, 'functors' are instantiated by supplying actual module arguments for the functor’s module parameters (similar to supplying arguments in a function call). A functor parameter must be a module, or another functor.<br>
 It is defined like this `module ModuleName type (Structure: Signature) = struct implementations end` whereby inside the implementations the module given as argument can be accessed.
+
+##Ocsigen Free tutorials
+### Introduction
+Ocsigen is an OCaml framework for developing web or mobile apps. It can both be used client or server side.
+
+Ocsigen consists of several independent open-source projects such as 'Lwt', 'TyXML', 'Js_of_ocaml', 'Eliom', 'Ocsigen Server', 'Ocsigen Toolkit', 'Ocsigen Start'. Some of which we will cover later.
+
+### Lwt
+Lwt is a concurrent programming library for OCaml allowing promises like in javascript.
+
+This library contains the 'Lwt_unix.sleep 1.0' function to temporarily halt program execution concurrently, meaning only the function it is used in gets blocked not the rest of the program.<br>
+`let p = f () in Lwt.bind p (fun x -> Lwt.return e)` allows the creation of an asynchronous function that executes concurrently and returns a promise using 'Lwt.return' to 'p'.<br>
+To detach a thread one can use `Lwt.async (fun () -> f ())`.
+
+It is also possible to handle exceptions using this library with `Lwt.fail`, 'Lwt.catch'... Also the possibility exists to create a thread that waits until it is awaken with `Lwt.wait` and `Lwt.wakeup`.
+
+### TyXML
+Verifies during compilation that your OCaml functions will never generate wrong HTML.
+
+Tyxml defines a constructor for each HTML tag and attribute. For example:
+```
+html
+     (head (title (txt "Hello")) [])
+     (body [ h1 [txt "Hello"] ;
+             p [txt "Blah"] ])
+```
+
+Eliom uses TyXML to create several kinds of nodes:<br>
+Module 'Eliom_content.Html.D' will automatically insert an id in the attributes of the node, to label a precise instance of the node in the DOM. On client side, calling 'Eliom_content.Html.To_dom.of_element' on these nodes will return the actual version of the nodes that are currently in the page.<br>
+In a client server Eliom app, you probably always want to use 'Eliom_content.Html.D' each time you want to bind events on an element
+
+Module 'Eliom_content.Html.R' makes it possible to create reactive nodes, that is, nodes that will be updated automatically when the data on which they depend change. It is based on module 'React', which implements functional reactive programming for OCaml.
+
+### Eliom: Services
+Eliom is a client-side library. It generates pages via 'services'. Eliom provides a service creation and identification mechanism.
+
+To create a service use `Eliom_service.create` and to register a handler on that service use `Eliom_registration.Html.register` like this:
+```
+let myservice =
+  Eliom_service.create
+    ~path:(Eliom_service.Path ["foo"])
+    ~meth:(Eliom_service.Get (Eliom_parameter.(string "myparam" ** int "i"))) (* /foo?myparam=FortyTwo&i=42 *)
+    ()
+    
+let () =
+  Eliom_registration.Html.register ~service:myservice
+    (fun (myparam, i) () ->
+      Lwt.return
+         Eliom_content.Html.F.(html (head (title (txt "")))
+                                    (body [h1 [txt myparam]])))
+```
+The prior code first defines a service at URL '/foo', that will use 'GET' HTTP method, and take one parameter of type 'string', named 'myparam', and one of type 'int', named 'i'.<br>
+Module `Eliom_parameter` is used to describe the type of service parameters.<br>
+Second the prior code registers a handler on the service. The handler function takes the parameters specified by the service and returns an HTML page defined using 'TyXML'. However handlers can also return other types of values.
+
+### Forms and links
+
 
 ## Resources
 [Introduction to Objective Caml](http://courses.cms.caltech.edu/cs134/cs134b/book.pdf)<br>
