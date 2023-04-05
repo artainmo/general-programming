@@ -252,7 +252,7 @@ Modules can also be nested.
 All the module references we’ve seen up to this point have been to specific, constant modules. It’s also possible in OCaml to write modules that are parameterized by other modules. To be used, 'functors' are instantiated by supplying actual module arguments for the functor’s module parameters (similar to supplying arguments in a function call). A functor parameter must be a module, or another functor.<br>
 It is defined like this `module ModuleName type (Structure: Signature) = struct implementations end` whereby inside the implementations the module given as argument can be accessed.
 
-##Ocsigen Free tutorials
+## Ocsigen Free tutorials
 ### Introduction
 Ocsigen is an OCaml framework for developing web or mobile apps. It can both be used client or server side.
 
@@ -307,6 +307,41 @@ Module `Eliom_parameter` is used to describe the type of service parameters.<br>
 Second the prior code registers a handler on the service. The handler function takes the parameters specified by the service and returns an HTML page defined using 'TyXML'. However handlers can also return other types of values.
 
 ### Forms and links
+Functions 'Eliom_content.Html.F.a' and 'D.a' create links to services with their parameters. For example, if 'home_service' expects no parameter and 'other_service' expects a 'string' and an optional 'int':
+```
+Eliom_content.Html.D.a ~service:home_service [txt "Home"] ()
+Eliom_content.Html.D.a ~service:other_service [txt "Other"] ("hello", Some 4)
+```
+
+Modules 'Eliom_content.Html.F' and 'D' define the form's elements with the usual 'TyXML'.<br>
+In contrast, modules 'Eliom_content.Html.F.Form' and 'D.Form' define form elements.<br>
+Example:
+```
+let open Eliom_content.Html.D in
+Form.post_form
+ ~service:connection_service
+   (fun (name, password) ->
+     [fieldset
+       [label ~a:[a_for name] [txt "Name: "];
+        Form.input ~input_type:`Text ~name:name Form.int;
+        br ();
+        Form.input
+          ~a:[a_placeholder "Password"]
+          ~input_type:`Password
+          ~name:password
+          Form.string;
+        br ();
+        Form.input ~input_type:`Submit ~value:"Connect" Form.string
+      ]]) ()
+```
+
+### Js_of_ocaml
+Js_of_ocaml is a compiler of OCaml bytecode to JavaScript, allowing to run Ocaml programs in a web-browser.
+
+Use modules 'Js_of_ocaml.Dom' and 'Js_of_ocaml.Dom_html' to interact with the DOM, or more specifically with HTML.<br>
+Functions 'Eliom_content.Html.To_dom.of_element', 'Eliom_content.Html.To_dom.of_div', etc. help to convert TyXML/Eliom_content nodes into the DOM counterparts.
+
+### Eliom: client-server apps
 
 
 ## Resources
