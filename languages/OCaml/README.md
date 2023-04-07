@@ -17,7 +17,7 @@
   - [OCsigen introduction](#OCsigen-introduction)
   - [Lwt](#Lwt)
   - [TyXML](#TyXML)
-  - [Eliom: Services](##eliom-services)
+  - [Eliom: Services](#eliom-services)
   - [Forms and links](#Forms-and-links)
   - [Js_of_ocaml](#Js_of_ocaml)
   - [Eliom: client-server apps](#Eliom-client-server-apps)
