@@ -342,7 +342,79 @@ Use modules 'Js_of_ocaml.Dom' and 'Js_of_ocaml.Dom_html' to interact with the DO
 Functions 'Eliom_content.Html.To_dom.of_element', 'Eliom_content.Html.To_dom.of_div', etc. help to convert TyXML/Eliom_content nodes into the DOM counterparts.
 
 ### Eliom: client-server apps
+Eliom allows both client and server side to be written in OCaml, simplifying communication between the two. 
 
+It generates two pragrams from the same set of OCaml files. One compiled to bytecode to be executed on the server and the other compiled to javascript with 'Js_of_ocaml' to be executed in browser.<br>
+PPX annotations allow to split the code into these two programs:<br>
+```
+let%client ... = ... (* Code to be included in client app *)
+let%server ... = ... (* Code to be included in server app *)
+let%shared ... = ... (* Code to be included both in client and server app *)
+(* Same for module%shared, open%shared, type%shared etc. *)
+```
+Service handlers and service registration are usually written in shared sections to enable page generation on both sides.
+
+### Sessions
+Session data is saved on server side in Eliom 'references'. The following Eliom reference will count the number of visits of a user on a page:
+```
+let%server count_ref =
+  Eliom_reference.eref
+    ~scope:Eliom_common.session
+    0 (* default value for everyone *)
+    
+let%lwt count = Eliom_reference.get count_ref in
+Eliom_reference.set count_ref (count + 1);
+Lwt.return ()
+```
+
+### Browser events
+Attributes like 'a_onclick' in module 'Eliom_content.Html.D' or 'F' take a client side function as parameter:
+```
+div ~a:[a_onclick [%client fun ev -> ... ]] [ ... ]
+```
+
+Module 'Lwt_js_events' of 'Js_of_ocaml' defines a way to bind browser events using 'Lwt' promises.<br>
+For example, the following code will wait for a click on element 'd' before continuing:
+```
+let%lwt ev = Lwt_js_events.click (Eliom_content.Html.To_dom.of_element ~%d) in
+...
+```
+Functions like 'Lwt_js_events.clicks' or 'Lwt_js_events.mousedowns' will call the function given as second parameter for each click or mousedown events on their first parameter.
+
+### Ocsigen Toolkit
+Ocsigen Toolkit defines several widgets that can be generated either on server or client sides.
+
+For example module Ot_spinner implements a widgets that you can use to display a spinner (or fake elements) when some parts of your page take time to appear.
+
+### Ocsigen Start
+Ocsigen-start is a library and a template of Eliom application, with many common features like user registration, login box, notification system, etc.
+
+### Server to client communication
+Modules 'Eliom_notif' and 'Os_notif' define the simplest interface to enable server to client communication
+
+### Reactive programming
+Eliom allows to insert reactive nodes in pages, that is, nodes which are automatically updated when the values on which they depend change.
+
+Function 'React.S.create' creates a signal and a function to change its value:
+```
+let%client mysignal, set_mysignal = React.S.create 0
+```
+
+Insert a (client side) reactive node in a page using function 'Eliom_content.Html.R.node':
+```
+let%client f () =
+  let open Eliom_content.Html in
+  F.div [ R.node s_p ]
+```
+
+Module 'Eliom_content.Html.R' also defines all 'TyXML' nodes, which take reactive content as parameter. For example 'Eliom_content.Html.R.txt' takes a value of type 'string React.S.t' as parameter (string signal).
+
+### Ocsigen Server
+Ocsigen Server is a full featured Web server.
+
+It has a powerful extension mechanism that makes it easy to plug your own OCaml modules for generating pages.
+
+Ocsigen Server has a [sophisticated configuration](https://ocsigen.org/ocsigenserver/latest/manual/config) file mechanism allowing complex configurations of sites.
 
 ## Resources
 [Introduction to Objective Caml](http://courses.cms.caltech.edu/cs134/cs134b/book.pdf)<br>
