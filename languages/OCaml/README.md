@@ -209,7 +209,7 @@ raise (Fail "error message") (*Here we trigger the exception*)
 ```
 When an exception is raised it is passed to the currently active exception handler. Exception handlers can be defined like match patterns but using the 'try' keyword instead of the 'match' keyword.
 
-Examples of automatically triggered exceptions that you could manually raise too are for example 'Not_found' when searching, 'Invalied_argument' when a function received a wrong argument...
+Examples of automatically triggered exceptions that you could manually raise too are for example 'Not_found' when searching, 'Invalid_argument' when a function received a wrong argument...
 
 In some cases it is useful to define a 'finally' cause when 'trying' an exception. The purpose of a 'finally' clause is to execute some code (usually to clean up) after an expression is evaluated, no matter if the exception was raised or not.
 
@@ -252,7 +252,7 @@ The 'ocamldebug' program can be used to debug a program compiled with 'ocamlc'. 
 As we saw in the previous chapter, programs can be divided into parts that can be implemented in files, and each file can be given an interface that specifies what its public types and values are.<br>
 Files are not the only way to partition a program, OCaml also provides a 'module' system that allows programs to be partitioned even within a single file. There are three key parts in the module system: 'signatures', 'structures', and 'functors', where 'signatures' correspond to interfaces, 'structures' correspond to implementations, and 'functors' are functions over structures. 
 
-Named structures are defined with the module and struct keywords using the following syntax: `module ModuleName = struct implementation end`. The module name  must begin with an uppercase letter. The implementation can include any definition that might occur in a .ml file.
+Named structures are defined with the module and struct keywords using the following syntax: `module ModuleName = struct implementation end`. The module name  must begin with an uppercase letter. The implementation can include any definition that might occur in a '.ml' file.
 
 As we saw before each '.ml' file contains implementations that can be linked to an interface defined a '.mli' file. Modules allow the same, the implementations are defined in a 'structure' and the interface is defined in a 'signature'.<br>
 A signature must have the same name as the structure it is linked to and be defined like that: `module type ModuleName = sig interface end`.<br>
