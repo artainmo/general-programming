@@ -398,7 +398,7 @@ Functions like 'Lwt_js_events.clicks' or 'Lwt_js_events.mousedowns' will call th
 ### Ocsigen Toolkit
 Ocsigen Toolkit defines several widgets that can be generated either on server or client sides.
 
-For example module Ot_spinner implements a widgets that you can use to display a spinner (or fake elements) when some parts of your page take time to appear.
+For example module 'Ot_spinner' implements a widgets that you can use to display a spinner (or fake elements) when some parts of your page take time to appear.
 
 ### Ocsigen Start
 Ocsigen-start is a library and a template of Eliom application, with many common features like user registration, login box, notification system, etc.
