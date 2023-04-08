@@ -167,7 +167,7 @@ An open union type is able to add more cases to the type during subsequent defin
 
 ### Reference cells
 By default variables are constants in OCaml. To make variables mutable in OCaml we need to define 'reference cells'. Reference cells can be seen as a box that contains a value that is mutable, meaning the value it contains can change by being reassigned a new one.<br>
-Reference cells are created using the 'ref' keyword like this `let variableName = ref value`. To access the value inside a reference cell we need to use the '!' symbol like this `!variableName`.
+Reference cells are created using the 'ref' keyword like this `let variableName = ref value`. To access the value inside a reference cell we need to use the '!' symbol like this `!variableName`. And to update the reference cell value we use ':=' like this `variable := newValue`.
 
 ### Records, Arrays, and String
 A record is like a tuple where the elements of the tuple are named. Arrays and strings are fixed-length sequences of data supporting random access to the elements. All three types support mutation of elements, by assignment.
