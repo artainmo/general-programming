@@ -124,9 +124,9 @@ end (*Because the else close contains multiple expressions it needs to be closed
 While other languages usually use a switch statement, OCaml has the 'match' statement. It looks for example like this:
 ```
 match i with
-	0 -> "zero"
-	1 -> "one"
-	2 -> "three"
+| 0 -> "zero"
+| 1 -> "one"
+| 2 -> "three"
 ```
 The body of a OCaml function can also only consist of such a match statement where the sole function parameter is matched against patterns, such a function uses the keyword 'function' instead of 'fun'.<br>
 Patterns can be defined in more complex ways, if a pattern should consist of multiple values those can be separated using `value1 | value2 | value3`, if you want the whole alphabet you can use the pattern `'A'..'Z'`. A pattern that matches everything is indicated with `_`, usually then an error is raised like this `_ -> raise (Invalid_argument "personal message")`.<br>
