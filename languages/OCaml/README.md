@@ -129,7 +129,7 @@ match i with
 | 2 -> "three"
 ```
 The body of a OCaml function can also only consist of such a match statement where the sole function parameter is matched against patterns, such a function uses the keyword 'function' instead of 'fun'.<br>
-Patterns can be defined in more complex ways, if a pattern should consist of multiple values those can be separated using `value1 | value2 | value3`, if you want the whole alphabet you can use the pattern `'A'..'Z'`. A pattern that matches everything is indicated with `_`, usually then an error is raised like this `_ -> raise (Invalid_argument "personal message")`.<br>
+Patterns can be defined in more complex ways, if a pattern should consist of multiple values those can be separated using `value1 | value2 | value3`, if you want the whole alphabet you can use the pattern `'A'..'Z'`. A pattern can also contain a condition, for example `| x when x < 4 ->`. A pattern that matches everything is indicated with `_`, usually then an error is raised like this `_ -> raise (Invalid_argument "personal message")`.<br>
 
 ### Variables, Functions, Looping 
 Variables are defined using the 'let' keyword like this `let variableName = expression`. 
