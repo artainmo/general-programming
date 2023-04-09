@@ -149,6 +149,7 @@ You can also explicitly indicate what function parameter or return type should b
 ### Tuples, Lists and Unions
 A tuple is a collection of values of arbitrary types.<br>
 The syntax for a tuple is a sequence of expressions separated by commas. For example `let tuple = 1, "Hello World"`, which can be deconstructed like this `let x, y = tuple` with x taking the first tuple value and y the second.<br>
+You can extract the first two components of a tuple by using the 'fst' and 'snd' operators for the first and second value respectively, like this `let firstTupleValue = (fst tupleName)`.<br>
 Tuples can be useful to let functions return multiple values.
 
 Lists are also used extensively in OCaml programs. A list is a sequence of immutable values of the same type.<br>
