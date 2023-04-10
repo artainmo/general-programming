@@ -274,6 +274,8 @@ Ocsigen is an OCaml framework for developing web or mobile apps. It can both be 
 
 Ocsigen consists of several independent open-source projects such as 'Lwt', 'TyXML', 'Js_of_ocaml', 'Eliom', 'Ocsigen Server', 'Ocsigen Toolkit', 'Ocsigen Start'. Some of which we will cover later.
 
+You can print to the browser's console from client-side eliom with `Firebug.console##log "here";` ([Learn more](https://stackoverflow.com/questions/61991262/how-do-i-write-console-log-in-js-of-ocaml)). 
+
 ### Lwt
 Lwt is a concurrent programming library for OCaml allowing promises like in javascript.
 
