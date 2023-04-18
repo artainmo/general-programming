@@ -131,59 +131,86 @@ Le rôle du modelé OSI est utilisé pour standardiser la communication entre le
 
 Le modèle comporte 7 couches tandis que le TCP/IP seulement 4.
 
-HERE
+- **Niveau** - **Ancien modèle** - **Nouveau modèle**
+- Niveau 7 - Couche Application - Niveau Application
+- Niveau 6 - Couche Présentation - Niveau Présentation
+- Niveau 5 - Couche Session - Niveau Session
+- Niveau 4 - Couche Transport - Niveau Message
+- Niveau 3 - Couche Réseau - Niveau Paquet
+- Niveau 2 - Couche Liaison Données - Niveau Trame
+- Niveau 1 - Couche Physique - Niveau Physique
 
-La couche physique définit la façon dont les données sont physiquement converties en signaux numériques sur le média de communication (impulsions électriques, modulation de la lumière, etc.).
-La couche liaison données définit l'interface avec la carte réseau et le partage du média de transmission.
-La couche réseau permet de gérer l'adressage et le routage des données, c'est-à-dire leur acheminement via le réseau.
-La couche transport est chargée du transport des données, de leur découpage en paquets et de la gestion des éventuelles erreurs de transmission.
-La couche session définit l'ouverture et la destruction des sessions de communication entre les machines du réseau.
-La couche présentation définit le format des données manipulées par le niveau applicatif (leur représentation, éventuellement leur compression et leur chiffrement) indépendamment du système.
-La couche application assure l'interface avec les applications. Il s'agit donc du niveau le plus proche des utilisateurs, géré directement par les logiciels.
+* La couche physique définit la façon dont les données sont physiquement converties en signaux numériques sur le média de communication (impulsions électriques, modulation de la lumière, etc.).
+* La couche liaison données définit l'interface avec la carte réseau et le partage du média de transmission.
+* La couche réseau permet de gérer l'adressage et le routage des données, c'est-à-dire leur acheminement via le réseau.
+* La couche transport est chargée du transport des données, de leur découpage en paquets et de la gestion des éventuelles erreurs de transmission.
+* La couche session définit l'ouverture et la destruction des sessions de communication entre les machines du réseau.
+* La couche présentation définit le format des données manipulées par le niveau applicatif (leur représentation, éventuellement leur compression et leur chiffrement) indépendamment du système.
+* La couche application assure l'interface avec les applications. Il s'agit donc du niveau le plus proche des utilisateurs, géré directement par les logiciels.
 
-Serveur DHCP (Dynamic Host Configuration Protocol):
+### Serveur DHCP (Dynamic Host Configuration Protocol):
 Les serveurs maintiennent les paramètres de configuration de client comme les IP, les noms de domaines, les passerelles, …
-Lorsque q un périphérique client est connecté au réseau, il envoie une demande DHCP pour récupérer les informations. Le serveur va alors toutes les informations dont il a besoin par un bail (temps limiter).
+
+Lorsque q'un périphérique client est connecté au réseau, il envoie une demande DHCP pour récupérer les informations. Le serveur va alors toutes les informations dont il a besoin par un bail (temps limiter).
+
 Permet d'économiser les adresses IP (unique).
+
 Exemple : Entreprise 
+
 ADMIN -> SERRVEUR DHCP -> tous les appareils clients.
+
 Utilise le Protocol UDP au niveau des couche de transport.
-Protocole DHCP :
+
+### Protocole DHCP :
 Il est charge de la configuration automatique des IP dans un réseau informatique. Elles sont tirées d'une page d'adresse et peuvent être attribuer de manière permanentes ou pas. C'est un service essentiel a un réseau local.
+
 DHCP apporte une solution à ces trois inconvénients :
-Seuls les ordinateurs en service utilisent une adresse de l’espace d’adressage ;
-Toute modification des paramètres (adresse de la passerelle, des serveurs de noms) est répercutée sur les stations lors du redémarrage ;
-La modification de ces paramètres est centralisée sur les serveurs DHCP.
-Serveur DNS (Domain Name System) :
-Analyse récursive du nom de domaine pour définir l'IP
-Protocole DNS :
+* Seuls les ordinateurs en service utilisent une adresse de l’espace d’adressage ;
+* Toute modification des paramètres (adresse de la passerelle, des serveurs de noms) est répercutée sur les stations lors du redémarrage ;
+* La modification de ces paramètres est centralisée sur les serveurs DHCP.
+
+### Serveur DNS (Domain Name System) :
+Analyse récursive du nom de domaine pour définir l'IP.
+
+### Protocole DNS :
 Conversion de noms de domaines en IP.
 
-Routage IP :
+### Routage IP :
 Le routage va permettre d'envoyer une information en dehors du réseau.  Chaque appareil lier aux réseaux peut jouer le rôle de routeur qui va permettre la communication entre les réseaux.
-La table de routage est importante dans le procède, elle va lister les routeurs capables de recevoir des datagrammes. Le principe est d'avoir un coter avec la liste des réseaux disponible et de l'autre la liste des routeurs.
-En résume :
-Un routeur est une machine possédant plusieurs interfaces ;
-Chaque interface d'un routeur est connectée à un réseau, le routeur relie ainsi plusieurs réseaux entre eux ;
-Toute machine ayant plusieurs interfaces peut jouer le rôle de routeur ;
-Un routeur se différencie d'une simple machine, car il accepte de relayer des paquets qui ne lui sont pas destinés ;
-Un routeur aiguille les paquets grâce à sa table de routage ;
-La table de routage indique quelle passerelle utiliser pour joindre un réseau.
-Config min pour faire communiquer 2 appareils en utilisant l’IP : 
-Attribuer une adresse IP et le masque de sous-réseau
-Utiliser le masque 255.255.255.0 pour 2 pc c'est suffisant.
-Grace au TCP/IP donner au pc à l'adresse IP qu’il doit utiliser ainsi que le masque de sous-réseau.
-Sur le deuxième pc, il faut faire la même chose, sauf que l'adresse IP doit avoir les 3 premiers octets identique et modifier le dernier.
-Créer un groupe de travail pour faire communiquer les 2 pc ensemble.
-Passerelle par défaut :
-C'est le nom générique pour un dispositif qui relier deux réseaux de types différents (local et publique). 
-Répéteur = passerelle de niveau 1
-Pont (switch 2 couche d’ISO) = passerelle de niveau 2
-Routeur = passerelle de niveau 3
-Généralement l'on définit passerelle le routeur (BOX) et le terme par défaut est utilisé alors qu'il s'agit de routage d'IP. 
-Qu’est-ce qu’un port d’un point de vue IP et comment est-ce utilisé pour se connecter à un autre appareil :
 
+La table de routage est importante dans le procède, elle va lister les routeurs capables de recevoir des datagrammes. Le principe est d'avoir un coter avec la liste des réseaux disponible et de l'autre la liste des routeurs.
+
+En résume :
+* Un routeur est une machine possédant plusieurs interfaces ;
+* Chaque interface d'un routeur est connectée à un réseau, le routeur relie ainsi plusieurs réseaux entre eux ;
+* Toute machine ayant plusieurs interfaces peut jouer le rôle de routeur ;
+* Un routeur se différencie d'une simple machine, car il accepte de relayer des paquets qui ne lui sont pas destinés ;
+* Un routeur aiguille les paquets grâce à sa table de routage ;
+* La table de routage indique quelle passerelle utiliser pour joindre un réseau.
+
+### Config min pour faire communiquer 2 appareils en utilisant l’IP : 
+* Attribuer une adresse IP et le masque de sous-réseau
+* Utiliser le masque 255.255.255.0 pour 2 pc c'est suffisant.
+* Grace au TCP/IP donner au pc à l'adresse IP qu’il doit utiliser ainsi que le masque de sous-réseau.
+* Sur le deuxième pc, il faut faire la même chose, sauf que l'adresse IP doit avoir les 3 premiers octets identique et modifier le dernier.
+* Créer un groupe de travail pour faire communiquer les 2 pc ensemble.
+
+### Passerelle par défaut :
+C'est le nom générique pour un dispositif qui relier deux réseaux de types différents (local et publique). 
+* Répéteur = passerelle de niveau 1
+* Pont (switch 2 couche d’ISO) = passerelle de niveau 2
+* Routeur = passerelle de niveau 3
+
+Généralement l'on définit passerelle le routeur (BOX) et le terme par défaut est utilisé alors qu'il s'agit de routage d'IP. 
+
+### Qu’est-ce qu’un port d’un point de vue IP et comment est-ce utilisé pour se connecter à un autre appareil :
 Lorsque deux réseaux communiquent via un routeur il fait appelle au routeur NAT.
+
 Le routeur permet à un hôte de rediriger le port sur un port spécifique.
+
 La connexion ne peut pas être ciblée que sur l'adresse IP du routeur NAT car le réseaux interne est caché derrière le NAT.
+
 NAT (Network Address Translation) : c'est lorsqu'un routeur fait correspondre une IP avec une autre. La fonction NAT traduit une adresse IP source interne en adresse IP globale.
+
+### Resources
+[Aglorios - Netwhat](https://github.com/Aglorios17/Netwhat_19)
