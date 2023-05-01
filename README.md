@@ -9,5 +9,3 @@ First talk about terminal and shell
 Second talk about text-editor and IDE
 
 In what order should languages be learned?
-
-Also try to collect notes from the project 'netwhat'. Ask aglorios for his old plot of it.
