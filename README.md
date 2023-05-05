@@ -10,4 +10,4 @@ Second talk about text-editor and IDE
 
 In what order should languages be learned?
 
-Also talk about stack, heap, (2,4,8,16,32,64,128,256...)
+Also talk about stack, heap, (bits, bytes..)(2,4,8,16,32,64,128,256...)
