@@ -176,7 +176,53 @@ The types covered previously are of a known size, can be stored on the stack and
 let mut s = String::from("hello");
 s.push_str(", world!");
 ```
+In languages with a garbage collector (GC), the GC keeps track of and cleans up memory that isn’t being used anymore. In most languages without a GC, it’s our responsibility to identify when memory is no longer being used and to call code to explicitly free it, just as we did to request it. Doing this correctly has historically been a difficult programming problem. If we forget, we’ll waste memory. If we do it too early, we’ll have an invalid variable. If we do it twice, that’s a bug too. Rust takes a different path: the memory is automatically returned once the variable that owns it goes out of scope.
 
+In the following code a variable containing an integer is copied into another variable. Thus both variables will hold the value 5 but in different memory spaces which we call a deep copy. This is possible because integers use the stack which can create copies fast.
+```
+let x = 5;
+let y = x;
+```
+However, because 'String' uses the heap it won't create a deep copy instead a shallow copy which consists of the second variable pointing to the same heap memory space. This could create a double-free problem if both variables are freed while they point to the same memory location. To resolve this problem Rust makes the first 'String' variable invalid, thus we can talk about 'moving' instead of really shallow copying.
+```
+let s1 = String::from("hello");
+let s2 = s1;
+
+println!("{s1}, world!"); // This will create a compilation error because s1 has been made invalid.
+```
+If we do want to deeply copy the heap data of the 'String', not just the stack data, we can use a common method called `clone`.
+```
+let s1 = String::from("hello");
+let s2 = s1.clone();
+
+println!("s1 = {s1}, s2 = {s2}"); // This works just fine.
+```
+Passing a variable to a function will move or copy, just as assignment does.
+```
+fn main() {
+    let s = String::from("hello");  // s comes into scope
+
+    takes_ownership(s);             // s's value moves into the function...
+                                    // ... and so is no longer valid here
+
+    let x = 5;                      // x comes into scope
+
+    makes_copy(x);                  // x would move into the function,
+                                    // but i32 is Copy, so it's okay to still
+                                    // use x afterward
+
+} // Here, x goes out of scope, then s. But because s's value was moved, nothing
+  // special happens.
+
+fn takes_ownership(some_string: String) { // some_string comes into scope
+    println!("{some_string}");
+} // Here, some_string goes out of scope and `drop` is called. The backing
+  // memory is freed.
+
+fn makes_copy(some_integer: i32) { // some_integer comes into scope
+    println!("{some_integer}");
+} // Here, some_integer goes out of scope. Nothing special happens.
+```
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
