@@ -223,6 +223,10 @@ fn makes_copy(some_integer: i32) { // some_integer comes into scope
     println!("{some_integer}");
 } // Here, some_integer goes out of scope. Nothing special happens.
 ```
+If we tried to use 's' after the call to 'takes_ownership', Rust would throw a compile-time error, this because its value got 'moved' to the function.<br>
+Returning values from a function can also transfer ownership. Rust does let us return multiple values using a tuple.
+
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
