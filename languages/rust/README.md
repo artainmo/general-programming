@@ -11,8 +11,17 @@ High-level ergonomics and low-level control are often at odds in programming lan
 Rust provides speed and stability. Speed both in terms of writing and executing.<br>
 Rust basically is a general-purpose, high-level programming language with detailed control as found in a low-level programming language. Thus Rust tries to be it all. 
 
+To create a 'Hello, world!' program, first create a source file named 'main.rs'. Then use the following code.<br>
+```
+fn main() {
+    println!("Hello, world!"); # Using a ! means that we are calling a macro instead of a normal function
+}
+```
+Complile the file `rustc main.rs` and execute `./main`. If you have a C or C++ background, you’ll notice that this is similar to gcc or clang. After compiling successfully, Rust outputs a binary executable.
 
-
+Cargo is Rust’s build system and package manager. Cargo handles a lot of tasks, such as building your code, downloading the libraries your code depends on, and building those libraries (We call the libraries that your code needs dependencies).<br>
+You can create a new directory/project with `cargo new projectName`. Inside that *projectName* directory you will find a 'Cargo.toml' configruation file and a 'src' directory with a 'main.rs' file. The main file should contain a main function which indicates the start of the program.<br>
+With a Cargo project you can use `cargo build` to create an executable file in 'target/debug/projectName'.
 
 
 ## Resources
