@@ -75,6 +75,108 @@ In Rust, the idiomatic comment style starts a comment with two slashes, and the 
 // explain what’s going on.
 ```
 
+An if expression allows you to branch your code depending on conditions.
+```
+if number % 4 == 0 {
+    println!("number is divisible by 4");
+} else if number % 3 == 0 {
+    println!("number is divisible by 3");
+} else if number % 2 == 0 {
+    println!("number is divisible by 2");
+} else {
+    println!("number is not divisible by 4, 3, or 2");
+}
+```
+'if' is an expression, we can use it on the right side of a let statement to assign the outcome to a variable. For example `let number = if true { 5 } else { 6 };`.
+
+Rust has three kinds of loops: loop, while, and for.<br>
+The loop keyword tells Rust to execute a block of code over and over again forever or until you explicitly tell it to stop.<br>
+```
+fn main() {
+    loop {
+        println!("again!");
+    }
+}
+```
+Fortunately, Rust also provides a way to break out of a loop using code. You can place the `break` keyword within the loop to tell the program when to stop executing the loop. `continue` in a loop tells the program to skip over any remaining code in the current iteration of the loop and go to the next iteration.<br>
+The result of a loop can be given to a variable.
+```
+let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+```
+If you have loops within loops, break and continue apply to the innermost loop at that point. You can optionally specify a loop label on a loop that you can then use with break or continue to specify that those keywords apply to the labeled loop instead of the innermost loop.
+```
+'counting_up: loop { // We use one single quote to indicate the loop label.
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+```
+The 'while' loop runs as long as the condition is true.
+```
+let mut number = 3;
+
+while number != 0 {
+    println!("{number}!");
+    number -= 1;
+}
+```
+A 'for' loop can execute code for each item in a collection.
+```
+let a = [10, 20, 30, 40, 50];
+
+for element in a {
+        println!("the value is: {element}");
+}
+```
+We can also use for to loop over a range.
+```
+for number in (1..4) {
+        println!("{number}!");
+}
+```
+
+### Understanding Ownership
+Ownership is Rust’s most unique feature and has deep implications for the rest of the language. It enables Rust to make memory safety guarantees without needing a garbage collector.
+
+Ownership is a set of rules that govern how a Rust program manages memory. All programs have to manage the way they use a computer’s memory while running. Some languages have garbage collection that regularly looks for no-longer-used memory as the program runs, in other languages, the programmer must explicitly allocate and free the memory. Rust uses a third approach, memory is managed through a system of ownership with a set of rules that the compiler checks. If any of the rules are violated, the program won’t compile.
+
+Many programming languages don’t require you to think about the stack and the heap very often. But in a systems programming language like Rust, whether a value is on the stack or the heap affects how the language behaves and why you have to make certain decisions.<br>
+Both the stack and the heap are parts of memory available to your code to use at runtime, but they are structured in different ways. The stack stores values in the order it gets them and removes the values in the opposite order. This is referred to as last in, first out. All data stored on the stack must have a known, fixed size. Data with an unknown size at compile time or a size that might change must be stored on the heap instead. The heap is less organized: when you put data on the heap, you request a certain amount of space. The memory allocator finds an empty spot in the heap that is big enough, marks it as being in use, and returns a pointer, which is the address of that location. This process is called allocating on the heap. Because the pointer to the heap is a known, fixed size, you can store the pointer on the stack, but when you want the actual data, you must follow the pointer. Pushing to the stack is faster than allocating on the heap because the allocator never has to search for a place to store new data, that location is always at the top of the stack. Accessing data in the heap is slower than accessing data on the stack because you have to follow a pointer to get there.<br>
+When your code calls a function, the values passed into the function (including, potentially, pointers to data on the heap) and the function’s local variables get pushed onto the stack. When the function is over, those values get popped off the stack. However, values stored on the heap need to be removed manually when not in use anymore.<br>
+The main purpose of ownership is to manage heap data.
+
+In Rust, each value has an owner, there can only be one owner at a time, when the owner goes out of scope the value will be dropped. Here is an example of a variable's scope.
+```
+{                          // s is not valid here, it’s not yet declared
+        let s = "hello";   // s is valid from this point forward
+
+        // do stuff with s
+}                          // this scope is now over, and s is no longer valid
+```
+The types covered previously are of a known size, can be stored on the stack and popped off the stack when their scope is over. The 'String' data type is stored on the heap to allow storage of an amount of text that is unknown at compile time. You can create a 'String' from a string literal using the from function, like so `let s = String::from("hello");`. The double colon :: operator allows us to namespace this particular 'from' function under the 'String' type. This kind of string can be mutated:
+```
+let mut s = String::from("hello");
+s.push_str(", world!");
+```
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
