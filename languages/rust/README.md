@@ -21,7 +21,9 @@ Complile the file `rustc main.rs` and execute `./main`. If you have a C or C++ b
 
 Cargo is Rust’s build system and package manager. Cargo handles a lot of tasks, such as building your code, downloading the libraries your code depends on, and building those libraries (We call the libraries that your code needs dependencies).<br>
 You can create a new directory/project with `cargo new projectName`. Inside that *projectName* directory you will find a 'Cargo.toml' configruation file and a 'src' directory with a 'main.rs' file. The main file should contain a main function which indicates the start of the program.<br>
-With a Cargo project you can use `cargo build` to create an executable file in 'target/debug/projectName'.
+With a Cargo project you can use `cargo build` to create an executable file in 'target/debug/projectName' and then execute that with `cargo run`. `cargo check` can be used to verify if code compiles without creating an executable. Another advantage of Cargo is that the commands are the same no matter the operating system. When the project is ready for release, you can use `cargo build --release` to compile it with optimizations for the Rust code to run faster, the executable will sit in 'target/release'.<br>
+With simple projects, Cargo doesn’t provide a lot of value over just using rustc, but once programs grow to multiple files or need a dependency, it’s much easier to let Cargo coordinate the build.
+
 
 
 ## Resources
