@@ -433,6 +433,50 @@ if let Coin::Quarter(state) = coin {
 }
 ```
 
+### Generic Types, Traits, and Lifetimes
+Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
+```
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+fn main() {
+    let integer = Point { x: 5, y: 10 };
+    let float = Point { x: 1.0, y: 4.0 };
+}
+```
+If we want to use different placeholders we can too.
+```
+struct Point<T, U> { // Next to T we use the placeholder U.
+    x: T,
+    y: U,
+}
+
+fn main() {
+    let both_integer = Point { x: 5, y: 10 };
+    let both_float = Point { x: 1.0, y: 4.0 };
+    let integer_and_float = Point { x: 5, y: 4.0 }; // One is integer and other float.
+}
+```
+We can define enums to hold generic data types in their variants.
+```
+enum Option<T> {
+    Some(T),
+    None,
+}
+```
+We can implement methods on structs and enums and use generic types in their definitions too.
+```
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+```
+
+A trait defines the functionality a particular type has and can share with other types.
+
 ### Continue...
 [Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
 
