@@ -226,7 +226,38 @@ fn makes_copy(some_integer: i32) { // some_integer comes into scope
 If we tried to use 's' after the call to 'takes_ownership', Rust would throw a compile-time error, this because its value got 'moved' to the function.<br>
 Returning values from a function can also transfer ownership. Rust does let us return multiple values using a tuple.
 
+A reference is like a pointer in that it’s an address we can follow to access the data stored at that address, that data is owned by some other variable.<br>
+Here is an example where we use references to avoid the need to move ownership.
+```
+fn main() {
+    let s1 = String::from("hello");
 
+    let len = calculate_length(&s1); # We use & to indicate reference.
+
+    println!("The length of '{s1}' is {len}."); // Because s1 didn't get moved to the calculate_length function we can still use it.
+}
+
+fn calculate_length(s: &String) -> usize { // We use & to indicate reference.
+    s.len()
+}
+```
+We call the action of creating a reference borrowing. Like variables, references too are immutable by default. However, references can also use the 'mut' keyword to become mutable.
+```
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s); // &mut is used to indicate a mutable reference
+}
+
+fn change(some_string: &mut String) { // &mut is used to indicate a mutable reference
+    some_string.push_str(", world");
+}
+```
+Mutable references have one big restriction, if you have a mutable reference to a value, you can have no other references to that value. As always, we can use curly brackets to create a new scope, allowing for multiple mutable references, just not simultaneous ones.<br>
+References pointing to deallocated variables will create compilation errors.
+
+Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection. A collection is a dynamic data sequence on the heap such as a String or Vector. A slice is a kind of reference, so it does not have ownership.<br>
+A String Slice is a reference to a part of a String, and it looks like `let hello = &s[0..5];`. To indicate up to last element `&s[3..]`. Arrays are spliced in a similar way.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
