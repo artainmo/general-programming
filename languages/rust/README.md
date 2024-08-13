@@ -292,6 +292,32 @@ fn main() {
     let origin = Point(0, 0, 0);
 }
 ```
+Unit-like structs are structs without any fields, they are useful when you need to implement a trait on some type but don’t have any data that you want to store in the type itself. Traits will be discussed later. They are defined like this `struct AlwaysEqual;`.<br>
+Methods are similar to functions, but unlike functions, methods are defined within the context of a struct (or an enum or a trait which will be discussed later), and their first parameter is always 'self', which represents the instance of the struct the method is being called on.<br>
+```
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle { // This implementation block is used to define methods of Rectangle struct. 
+    fn area(&self) -> u32 { // The '&self' is actually short for 'self: &Self'. We don’t want to take ownership, and we just want to read the data in the struct, not write to it. If we wanted to change the instance that we’ve called the method on as part of what the method does, we’d use '&mut self' as the first parameter.
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area() // We call the struct method.
+    );
+}
+```
 
 
 ## Resources
