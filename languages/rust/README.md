@@ -259,5 +259,40 @@ References pointing to deallocated variables will create compilation errors.
 Slices let you reference a contiguous sequence of elements in a collection rather than the whole collection. A collection is a dynamic data sequence on the heap such as a String or Vector. A slice is a kind of reference, so it does not have ownership.<br>
 A String Slice is a reference to a part of a String, and it looks like `let hello = &s[0..5];`. To indicate up to last element `&s[3..]`. Arrays are spliced in a similar way.
 
+### Using Structs to structure related data
+A struct, or structure, is a custom data type that lets you package together and name multiple related values that make up a meaningful group. If you’re familiar with an object-oriented language, a struct is like an object’s data attributes.<br>
+To define a struct, we enter the keyword struct and name the entire struct.
+```
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64,
+}
+```
+To use a struct after we’ve defined it, we create an instance of that struct by specifying concrete values for each of the fields.
+```
+fn main() {
+    let mut user1 = User { // The 'mut' keyword indicates the values inside the structure are mutable.
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+}
+```
+To get a specific value from a struct, we use dot notation. For example, to access this user’s email address, we use `user1.email`.<br>
+Tuple structs are named tuples, its attributes are not named. They are defined and instanciated like this.
+```
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+fn main() {
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
+}
+```
+
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
