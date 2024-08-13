@@ -318,7 +318,62 @@ fn main() {
     );
 }
 ```
+All functions within 'impl' block can be called associated functions because they are associated with a certain struct/type. Associated functions that have 'self' as first parameter are methods. Associated functions that aren’t methods are often used for constructors that will return a new instance of the struct.
+```
+impl Rectangle {
+    fn square(size: u32) -> Self { // 'Self' keywords in the return type and in the body of the function are aliases for the type that appears after the 'impl' keyword, which in this case is 'Rectangle'.
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+}
+```
+To call this associated function, we use the '::' syntax with the struct name `let sq = Rectangle::square(3);`. The '::' syntax is used for both associated functions and namespaces created by modules. We’ll discuss modules later.<br>
+Each struct is allowed to have multiple 'impl' blocks.
 
+### Enums and pattern matching
+Enums allow you to define a type by enumerating its possible variants. Enums give you a way of saying a value is one of a possible set of values.<br>
+Any IP address can be either a version four or a version six address, but not both at the same time. That property of IP addresses makes the enum data structure appropriate because an enum value can only be one of its variants. Such as enum would be defined and instanciated like this.
+```
+enum IpAddrKind {
+    V4,
+    V6,
+}
+
+let four = IpAddrKind::V4;
+let six = IpAddrKind::V6;
+```
+We can put data directly into each enum variant.
+```
+enum IpAddr {
+        V4(String),
+        V6(String),
+}
+
+let home = IpAddr::V4(String::from("127.0.0.1"));
+let loopback = IpAddr::V6(String::from("::1"));
+```
+Just as we’re able to define methods on structs using 'impl', we’re also able to define methods on enums.<br>
+Rust doesn’t have the 'null' feature that many other languages have. 'null' is a value that means there is no value there. In languages with 'null', variables can always be in one of two states: 'null' or 'not-null'. The problem with 'null' values is that if you try to use a 'null' value as a 'not-null' value, you’ll get an error of some kind. Rust does not have 'nulls', but it does have an enum that can encode the concept of a value being present or absent. This enum is `Option<T>`, and it is defined as follows.
+```
+enum Option<T> {
+    None,
+    Some(T),
+}
+```
+The Option<T> enum is so useful that it’s even included in the prelude, you don’t need to bring it into scope explicitly. `<T>` is a generic type that can take any type, we will cover it later.
+```
+let some_number = Some(5);
+let some_char = Some('e');
+let absent_number: Option<i32> = None;
+```
+When we have a 'Some' value, we know that a value is present and the value is held within the 'Some'. When we have a 'None' value, in some sense it means the same thing as 'null'. For 'absent_number', Rust requires us to annotate the overall 'Option' type as the compiler can’t infer the type that the corresponding 'Some' variant will hold by looking only at a 'None' value.
+
+Rust has an extremely powerful control flow construct called match that allows you to compare a value against a series of patterns and then execute code based on which pattern matches.
+
+### Continue...
+[Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
