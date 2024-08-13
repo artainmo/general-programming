@@ -371,6 +371,52 @@ let absent_number: Option<i32> = None;
 When we have a 'Some' value, we know that a value is present and the value is held within the 'Some'. When we have a 'None' value, in some sense it means the same thing as 'null'. For 'absent_number', Rust requires us to annotate the overall 'Option' type as the compiler can’t infer the type that the corresponding 'Some' variant will hold by looking only at a 'None' value.
 
 Rust has an extremely powerful control flow construct called match that allows you to compare a value against a series of patterns and then execute code based on which pattern matches.
+```
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin { // The match construct verifies what variant the enum is.
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+```
+If you want to run multiple lines of code in a match arm, you must use curly brackets, and the comma following the arm is then optional.
+```
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => {
+            println!("Lucky penny!");
+            1
+        }
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+```
+'_' is a special pattern that matches any value and does not bind to that value. '()' indicates no code to run.
+```
+let dice_roll = 9;
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    _ => (),
+}
+
+fn add_fancy_hat() {}
+fn remove_fancy_hat() {}
+```
+
+
+
 
 ### Continue...
 [Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
