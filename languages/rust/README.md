@@ -415,8 +415,23 @@ fn add_fancy_hat() {}
 fn remove_fancy_hat() {}
 ```
 
-
-
+The 'if let' syntax lets you combine 'if' and 'let' into a less verbose way to handle values that match one pattern while ignoring the rest. It is shorter than using match by only verifying one pattern.
+```
+let config_max = Some(3u8);
+if let Some(max) = config_max {
+    println!("The maximum is configured to be {max}");
+}
+```
+The syntax 'if let' takes a pattern and an expression separated by an equal sign. It works the same way as a match. In this case, the pattern is 'Some(max)', and the 'max' binds to the value inside the 'Some'. We can then use 'max' in the body of the 'if let' block. The code in the 'if let' block isn’t run if the value doesn’t match the pattern.<br>
+'else' can also be used after the 'if let'.
+```
+let mut count = 0;
+if let Coin::Quarter(state) = coin {
+    println!("State quarter from {state:?}!");
+} else {
+    count += 1;
+}
+```
 
 ### Continue...
 [Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
