@@ -433,6 +433,13 @@ if let Coin::Quarter(state) = coin {
 }
 ```
 
+### Managing growing projects with Packages, Crates, and Modules
+As you write large programs, organizing your code will become increasingly important. By grouping related functionality and separating code with distinct features, you’ll clarify where to find code that implements a particular feature and where to go to change how a feature works.
+
+A crate is the smallest amount of code that the Rust compiler considers at a time. Crates can contain modules, and the modules may be defined in other files that get compiled with the crate.<br>
+A crate can come in one of two forms: a binary crate or a library crate. Binary crates are programs you can compile to an executable, such as command-line programs, they must have a 'main' function. Library crates don't have a 'main' function and don't compile to an executable, instead they define functionality shareable with multiple projects.<br>
+A package is a bundle of one or more crates that provides a set of functionality. A package contains a Cargo.toml file that describes how to build those crates. A package can contain as many binary crates as you like, but at most only one library crate.
+
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
 ```
