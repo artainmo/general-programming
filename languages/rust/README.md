@@ -475,7 +475,91 @@ impl<T> Point<T> {
 }
 ```
 
-A trait defines the functionality a particular type has and can share with other types.
+A trait defines the functionality a particular type has and can share with other types. A type’s behavior consists of the methods we can call on that type. Different types share the same behavior if we can call the same methods on all of those types.<br>
+A trait is a grouping of method signatures (the combination of a method's name and its parameter list) that types can implement. Each type implementing the trait must provide its own custom behavior for the body of the method signature. The compiler will enforce that any type implementing a trait has the methods defined in the trait.
+```
+pub trait Summary { // The keyword pub makes any module, function, or data structure accessible from inside of external modules.
+    fn summarize(&self) -> String; // Method signature associated with the trait.
+}
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle { // Here we implement the trait for NewsArticle type.
+    fn summarize(&self) -> String { // We define its own function body.
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet { // Here we implement the trait for Tweet type.
+    fn summarize(&self) -> String { // We define its own function body.
+        format!("{}: {}", self.username, self.content) 
+    }
+}
+```
+Sometimes it’s useful to have default behavior for some or all of the methods in a trait instead of requiring implementations for all methods on every type. Then, as we implement the trait on a particular type, we can keep or override each method’s default behavior. Inside the trait we would declare the method's function body too, and inside the type implementation we don't need to add anything when wanting to keep the default behavior, but can rewrite function if wanting to override it.
+```
+pub trait Summary {
+    fn summarize_author(&self) -> String;
+
+    fn summarize(&self) -> String {
+        format!("(Read more from {}...)", self.summarize_author())
+    }
+}
+
+impl Summary for Tweet {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
+    }
+
+    // We don't override 'summarize(&self)' thus keep its default behavior.
+}
+```
+Traits can also be used to indicate acceptable parameter types.
+```
+pub fn notify(item: &impl Summary) { // Instead of a concrete type for the 'item' parameter, we specify the 'impl' keyword and the trait name. This parameter accepts any type that implements the specified trait.
+    println!("Breaking news! {}", item.summarize()); // In the body of notify, we can call any methods on 'item' that come from the 'Summary' trait, such as 'summarize'.
+}
+```
+The 'impl Trait' syntax is actually syntax sugar for a longer form known as a trait bound, that looks like this.
+```
+pub fn notify<T: Summary>(item: &T) {
+    println!("Breaking news! {}", item.summarize());
+}
+```
+We can also specify more than one trait bound.
+```
+pub fn notify(item: &(impl Summary + Display)) { // Both Summary and Display traits are indicated.
+```
+We can also use the 'impl Trait' syntax in the return position to return a value of some type that implements a trait, as shown here.
+```
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    }
+}
+```
+We can also implement a trait for any type that implements another trait. This is called blanket implementations. 
+```
+impl<T: Display> ToString for T { // The 'ToString' trait is implemented on any type that implements the 'Display' trait.
+}
+```
 
 ### Continue...
 [Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
