@@ -561,8 +561,71 @@ impl<T: Display> ToString for T { // The 'ToString' trait is implemented on any 
 }
 ```
 
+Lifetimes ensure that references are valid as long as we need them to be. Every reference has a lifetime. Most of the time this lifetime is implicit and inferred, but sometimes when ambiguous, annotation is necessary.<br>
+Lifetime annotations don’t change how long any of the references live. Rather, they describe the relationships of the lifetimes of multiple references to each other. Lifetime annotations have a slightly unusual syntax: the names of lifetime parameters must start with an apostrophe (') and are usually all lowercase and very short. Most people use the name 'a for the first lifetime annotation.
+```
+&i32        // a reference
+&'a i32     // a reference with an explicit lifetime
+&'a mut i32 // a mutable reference with an explicit lifetime
+```
+To use lifetime annotations in function signatures, we need to declare the generic lifetime parameters inside angle brackets between the function name and the parameter list, just as we did with generic type parameters. We want the signature to express the following constraint to the compiler: the returned reference will be valid as long as both the parameters are valid. This is the relationship between lifetimes of the parameters and the return value. We’ll name the lifetime 'a and then add it to each reference.
+```
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+In practice, the function signature means that the lifetime of the reference returned by the 'longest' function is the same as the lifetimes of the values referred to by the function arguments. Remember, when we specify the lifetime parameters in this function signature, we’re not changing the lifetimes of any values passed in or returned. Rather, we’re specifying that the compiler should reject any values that don’t adhere to these constraints. The lifetime annotations become part of the contract of the function, much like the types in the signature.<br>
+The following code calling the previously defined function with lifetimes will create an error. 
+```
+fn main() {
+    let string1 = String::from("long string is long");
+    let result;
+    {
+        let string2 = String::from("xyz");
+        result = longest(string1.as_str(), string2.as_str());
+    }
+    println!("The longest string is {result}");
+}
+```
+The error shows that for 'result' to be valid for the 'println!' statement, string2 would need to be valid until the end of the outer scope. Rust knows this because we annotated the lifetimes of the 'longest' function parameters and return values using the same lifetime parameter 'a.<br>
+Lifetimes can also be used in methods.
+```
+impl<'a> ImportantExcerpt<'a> {
+    fn level(&self) -> i32 {
+        3
+    }
+}
+```
+'static is a special lifetime which denotes the affected reference lives for the entire duration of the program. Most of the time, an error message suggesting the use of 'static occurs from attempting to create a dangling reference or a mismatch of the available lifetimes. In such cases, the solution is to fix those problems, not to specify the 'static lifetime.<br>
+Here is an example of how to specify generic types, traits, and lifetimes, all in one function.
+```
+use std::fmt::Display;
+
+fn longest_with_an_announcement<'a, T>(
+    x: &'a str,
+    y: &'a str,
+    ann: T,
+) -> &'a str
+where
+    T: Display, // The generic type T can be filled by any type that implements the Display trait.
+{
+    println!("Announcement! {ann}");
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+
 ### Continue...
 [Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
+
+Chapter 10 is done already.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
