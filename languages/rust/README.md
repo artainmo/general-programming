@@ -526,6 +526,19 @@ use std::io::{self, Write};
 ```
 If we want to bring all public items defined in a path into scope, we can specify that path followed by the '*' glob operator: `use std::collections::*;`.
 
+When modules get large, you might want to move their definitions to a separate file to make the code easier to navigate.<br>
+One file that contains 'front_of_house' module and a submodule named 'hosting' can look like this.
+```
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+```
+We can split this in multiple files by creating 'src/front_of_house.rs', where the module name becomes file name. Its content would be `pub mod hosting;`. And creating 'src/front_of_house/hosting.rs', where parent module becomes directory name and submodule file name. Its content would be `pub fn add_to_waitlist() {}`. If we instead put 'hosting.rs' in the 'src' directory, the compiler would expect the 'hosting.rs' code to be in a hosting module declared in the crate root, and not declared as a child of the 'front_of_house' module.<br>
+The 'mod' keyword declares modules, and Rust looks in a file with the same name as the module for the code that goes into that module. If the file name is the module name, inside the file you don't need to define the module anymore, only the items it contains. This allows moving each module’s code to a separate file while the module tree remains the same. 
+
+Rust lets you split a package into multiple crates and a crate into modules so you can refer to items defined in one module from another module. You can do this by specifying absolute or relative paths. These paths can be brought into scope with a 'use' statement so you can use a shorter path for multiple uses of the item in that scope. Module code is private by default, but you can make definitions public by adding the 'pub' keyword.
 
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
