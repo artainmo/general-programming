@@ -641,7 +641,10 @@ for (key, value) in &scores {
     println!("{key}: {value}");
 }
 ```
-If we insert a key and a value into a hash map and then insert that same key with a different value, the value associated with that key will be replaced/overwritten.
+If we insert a key and a value into a hash map and then insert that same key with a different value, the value associated with that key will be replaced/overwritten.<br>
+By default, 'HashMap' uses a hashing function called 'SipHash' that can provide resistance to denial-of-service (DoS) attacks involving hash tables. This is not the fastest hashing algorithm available, but the trade-off for better security is worth it. If you find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher.
+
+### Error Handling
 
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
@@ -833,7 +836,7 @@ where
 ```
 
 ### Continue...
-[Chapter 7 out of 20 - Managing Growing Projects with Packages, Crates, and Modules](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html)
+[Chapter 9 out of 20 - Error Handling](https://doc.rust-lang.org/book/ch09-00-error-handling.html)
 
 Chapter 10 is done already.
 
