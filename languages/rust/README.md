@@ -440,6 +440,61 @@ A crate is the smallest amount of code that the Rust compiler considers at a tim
 A crate can come in one of two forms: a binary crate or a library crate. Binary crates are programs you can compile to an executable, such as command-line programs, they must have a 'main' function. Library crates don't have a 'main' function and don't compile to an executable, instead they define functionality shareable with multiple projects.<br>
 A package is a bundle of one or more crates that provides a set of functionality. A package contains a Cargo.toml file that describes how to build those crates. A package can contain as many binary crates as you like, but at most only one library crate.
 
+Modules let us organize code within a crate for readability and easy reuse. Modules also allow us to control the privacy of items because code within a module is private by default. We can choose to make modules and the items within them public, which exposes them to allow external code to use and depend on them.<br>
+We define a module with the 'mod' keyword followed by the name of the module. The body of the module then goes inside curly brackets. Inside modules, we can place other modules.
+```
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+
+        fn seat_at_table() {}
+    }
+
+    mod serving {
+        fn take_order() {}
+
+        fn serve_order() {}
+
+        fn take_payment() {}
+    }
+}
+```
+
+To show Rust where to find an item in a module tree, we use a path in the same way we use a path when navigating a filesystem. A path can take two forms. An absolute path is the full path starting from a crate root, it begins with the 'crate' name.
+A relative path starts from the current module and uses 'self', 'super', or an identifier in the current module. Both absolute and relative paths are followed by one or more identifiers separated by double colons (::). Choosing whether to use a relative or absolute path is a decision you’ll make based on your project, and it depends on whether you’re more likely to move item definition code separately from or together with the code that uses the item. Our preference in general is to specify absolute paths because it’s more likely we’ll want to move code definitions and item calls independently of each other.<br>
+```
+// Absolute path
+crate::front_of_house::hosting::add_to_waitlist();
+
+// Relative path
+front_of_house::hosting::add_to_waitlist()
+```
+We can construct relative paths that begin in the parent module, rather than the current module or the crate root, by using 'super' at the start of the path. This is like starting a filesystem path with the '..' syntax.<br>
+The 'pub' keyword on a module only lets code in its ancestor modules refer to it, not access its inner code. To make the items within the module public we need to use 'pub' on those items. If we use pub before a struct definition, we make the struct public, but the struct’s fields will still be private. We can make each field public or not on a case-by-case basis. In contrast, if we make an enum public, all of its variants are then public. We only need the 'pub' before the enum keyword.
+```
+mod back_of_house {
+    pub struct Breakfast {
+        pub toast: String,
+        seasonal_fruit: String,
+    }
+
+    impl Breakfast {
+        pub fn summer(toast: &str) -> Breakfast {
+            Breakfast {
+                toast: String::from(toast),
+                seasonal_fruit: String::from("peaches"),
+            }
+        }
+    }
+
+    pub enum Appetizer {
+        Soup,
+        Salad,
+    }
+}
+```
+
+
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
 ```
