@@ -494,6 +494,38 @@ mod back_of_house {
 }
 ```
 
+We can create a shortcut to a path with the 'use' keyword once, and then use the shorter name everywhere else in the scope.
+```
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+use crate::front_of_house::hosting; // 'hosting' now becomes a valid name.
+
+pub fn eat_at_restaurant() {
+    hosting::add_to_waitlist(); // 'hosting' can be called directly instead of 'front_of_house::hosting'.
+}
+```
+'as' can be used to create an alias, basically renaming.
+```
+use std::fmt::Result;
+use std::io::Result as IoResult; // We chose the new name IoResult, which won’t conflict with the 'Result' from 'std::fmt' that we’ve also brought into scope.
+```
+'use' can be preceded by 'pub' when wanting to make its statement public when being imported as a module for external code to use, this is called re-exporting.<br>
+To use an external package we can define it in our Cargo.toml. For example the 'rand' package can be indicated with its version like this `rand = "0.8.5"`. Then to include this package in scope `use rand;`. Many packages exist and can be found on 'crates.io'. On the other hand, 'std' refers to the standard library that comes with the Rust language and thus doesn't need to be indicated in 'Cargo.toml'. But we do need to include it in scope `use std::collections::HashMap;`.<br>
+When using multiple items defined in the same crate/module, we can do that in one line `use std::{cmp::Ordering, io};`.
+```
+// Written in two lines.
+use std::io;
+use std::io::Write;
+
+// Can be written in one line instead where we use the keyword 'self'.
+use std::io::{self, Write};
+```
+If we want to bring all public items defined in a path into scope, we can specify that path followed by the '*' glob operator: `use std::collections::*;`.
+
 
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
