@@ -17,7 +17,7 @@ fn main() {
     println!("Hello, world!"); // Using a ! means that we are calling a macro instead of a normal function
 }
 ```
-Complile the file `rustc main.rs` and execute `./main`. If you have a C or C++ background, you’ll notice that this is similar to gcc or clang. After compiling successfully, Rust outputs a binary executable.
+Compile the file `rustc main.rs` and execute `./main`. If you have a C or C++ background, you’ll notice that this is similar to gcc or clang. After compiling successfully, Rust outputs a binary executable.
 
 Cargo is Rust’s build system and package manager. Cargo handles a lot of tasks, such as building your code, downloading the libraries your code depends on, and building those libraries (We call the libraries that your code needs dependencies).<br>
 You can create a new directory/project with `cargo new projectName`. Inside that *projectName* directory you will find a 'Cargo.toml' configruation file and a 'src' directory with a 'main.rs' file. The main file should contain a main function which indicates the start of the program.<br>
@@ -645,6 +645,15 @@ If we insert a key and a value into a hash map and then insert that same key wit
 By default, 'HashMap' uses a hashing function called 'SipHash' that can provide resistance to denial-of-service (DoS) attacks involving hash tables. This is not the fastest hashing algorithm available, but the trade-off for better security is worth it. If you find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher.
 
 ### Error Handling
+Rust makes distinction between recoverable errors, such as file not found, and unrecoverable erros, such as trying to access a location beyond the end of an array.
+Most languages don't make this distinction and handle all errors the same with 'exceptions'. But Rust instead uses `Result<T,E>` for recoverable errors and the `panic!` macro to stop program execution when unrecoverable errors are encountered.
+
+The `panic!` macro can be explicitly called or will be automatically called after an illegal action such as trying to access an array past the end. By default these panics will print a failure message, clean and quit the program. You can also customize these panics in 'Cargo.toml' to abort instantly instead of clean in certain instances.
+
+In C, attempting to read beyond the end of a data structure is undefined behavior. You might get whatever is at the location in memory that would correspond to that element in the data structure, even though the memory doesn’t belong to that structure. This is called a buffer overread and can lead to security vulnerabilities if an attacker is able to manipulate the index in such a way as to read data they shouldn’t be allowed to that is stored after the data structure.<br>
+To protect your program from this sort of vulnerability, if you try to read an element at an index that doesn’t exist, Rust will stop execution and refuse to continue.
+
+
 
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
