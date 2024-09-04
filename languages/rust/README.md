@@ -653,6 +653,69 @@ The `panic!` macro can be explicitly called or will be automatically called afte
 In C, attempting to read beyond the end of a data structure is undefined behavior. You might get whatever is at the location in memory that would correspond to that element in the data structure, even though the memory doesn’t belong to that structure. This is called a buffer overread and can lead to security vulnerabilities if an attacker is able to manipulate the index in such a way as to read data they shouldn’t be allowed to that is stored after the data structure.<br>
 To protect your program from this sort of vulnerability, if you try to read an element at an index that doesn’t exist, Rust will stop execution and refuse to continue.
 
+Most errors aren’t serious enough to require the program to stop entirely. Sometimes when a function fails it’s for a reason that you can easily interpret and respond to.<br>
+The 'Result' enum is defined as having two variants, 'Ok' and 'Err', as follows:
+```
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+Let’s call a function that returns a 'Result' value because the function could fail.
+```
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Problem creating the file: {e:?}"),
+            },
+            other_error => {
+                panic!("Problem opening the file: {other_error:?}");
+            }
+        },
+    };
+}
+```
+Using 'match' works well enough, but it can be a bit verbose and doesn’t always communicate intent well. The 'Result' type has many helper methods defined on it to do various, more specific tasks. The 'unwrap' method is a shortcut method implemented just like the match expression. If the 'Result' value is the 'Ok' variant, 'unwrap' will return the value inside the 'Ok'. If the 'Result' is the 'Err' variant, 'unwrap' will call the 'panic!' macro for us.
+```
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt").unwrap();
+}
+```
+Instead of 'unwrap' you can use 'expect' which lets you choose the 'panic!' error message.
+```
+let greeting_file = File::open("hello.txt")
+        .expect("hello.txt should be included in this project");
+```
+
+Instead of handling an error within a function itself, you can let the function return the error, allowing the code that called the function to handle the error instead, we call this propagating the error.<br>
+The '?' operator can be used as a shortcut for propagating errors.
+```
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut username = String::new();
+
+    //The '?' placed after a 'Result' value is defined to work in almost the same way as the match expressions we defined to handle the 'Result' values.
+    //If the value of the Result is an 'Ok', the value inside the 'Ok' will get returned from this expression, and the program will continue.
+    //If the value is an 'Err', the 'Err' will be returned from the whole function as if we had used the 'return' keyword so the error value gets propagated to the calling code.
+    File::open("hello.txt")?.read_to_string(&mut username)?; // Here we chain method calls after the '?' for shorter code.
+    Ok(username)
+}
+```
+Instead we can use `fs::read_to_string("hello.txt")` as one function to open a file and put its contents into a string while handling errors automatically.<br>
+Note that you can use the '?' operator on a 'Result' in a function that returns 'Result', and you can also use the '?' operator on an 'Option' in a function that returns 'Option'.<br>
+When a main function returns a 'Result<(), E>', the executable will exit with a value of '0' if main returns 'Ok(())' and will exit with a nonzero value if main returns an 'Err' value. Executables written in C return integers when they exit, programs that exit successfully return the integer '0', and programs that error return some integer other than '0'. Rust also returns integers from executables to be compatible with this convention.
 
 
 ### Generic Types, Traits, and Lifetimes
