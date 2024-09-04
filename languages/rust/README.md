@@ -922,7 +922,22 @@ fn it_works() {
     assert_eq!(result, 4); // We give the 'assert!' macro arguments that evaluate to a Boolean. If the value is 'true', nothing happens and the test passes. If the value is 'false', the 'assert!' macro calls 'panic!' to cause the test to fail.
 }
 ```
-The 'assert!' macro can also only take one argument, then that one argument should return true or false. Inversely, the `assert_ne!` macro passes if the argument returns false or two values are different.
+The 'assert!' macro can also only take one argument, then that one argument should return true or false. Inversely, the `assert_ne!` macro passes if the argument returns false or two values are different.<br>
+We can also use custom error messages.
+```
+#[test]
+    fn greeting_contains_name() {
+        let result = greeting("Carol");
+        assert!(
+            result.contains("Carol"),
+            // If an error occurs "Greeting did ..." will be used as error message.
+            "Greeting did not contain name, value was `{}`", // '{}' is a placeholder for 'result'.
+            result
+        );
+    }
+```
+The function attribute `#[should_panic]` indicates the test passes if the code inside the function panics. We can be even more precise and indicate with what error message the function should panic by indicating a substring of that error message, for example `#[should_panic(expected = "less than or equal to 100")]`.
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
