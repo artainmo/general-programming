@@ -717,7 +717,8 @@ Instead we can use `fs::read_to_string("hello.txt")` as one function to open a f
 Note that you can use the '?' operator on a 'Result' in a function that returns 'Result', and you can also use the '?' operator on an 'Option' in a function that returns 'Option'.<br>
 When a main function returns a 'Result<(), E>', the executable will exit with a value of '0' if main returns 'Ok(())' and will exit with a nonzero value if main returns an 'Err' value. Executables written in C return integers when they exit, programs that exit successfully return the integer '0', and programs that error return some integer other than '0'. Rust also returns integers from executables to be compatible with this convention.
 
-Only use 'panic!' when the error is unrecoverable, else use 'Result' to have the option to recover if possible.
+Only use 'panic!' when the error is unrecoverable, else use 'Result' to have the option to recover.<br>
+It can also be beneficial to use 'panic!' when code could end in a bad state where continuing could be insecure or harmful. 
 
 ### Generic Types, Traits, and Lifetimes
 Generics are placeholders who can represent any type. They usually are denoted as `T`. We declare a generic function like this `fn largest<T>(list: &[T]) -> &T {`. We can also define structs to use a generic type parameter/placeholder in one or more fields.
