@@ -922,6 +922,7 @@ fn it_works() {
     assert_eq!(result, 4); // We give the 'assert!' macro arguments that evaluate to a Boolean. If the value is 'true', nothing happens and the test passes. If the value is 'false', the 'assert!' macro calls 'panic!' to cause the test to fail.
 }
 ```
+The 'assert!' macro can also only take one argument, then that one argument should return true or false. Inversely, the `assert_ne!` macro passes if the argument returns false or two values are different.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
