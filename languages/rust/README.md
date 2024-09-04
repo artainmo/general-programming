@@ -909,10 +909,19 @@ where
 }
 ```
 
-### Continue...
-[Chapter 9 out of 20 - Error Handling](https://doc.rust-lang.org/book/ch09-00-error-handling.html)
+### Writing automated tests
+Rust includes support for writing automated software tests because its compiler is not able to verify if functions do what they were intended to do. Thus automated tests are used to verify functions return what they should. Those tests can be run each time we make changes to our code.
 
-Chapter 10 is done already.
+At its simplest, a test in Rust is a function that’s annotated with the test attribute. Attributes are metadata about pieces of Rust code. To change a function into a test function, add `#[test]` on the line before `fn`.<br>
+When you run your tests with the `cargo test` command, Rust builds a test runner binary that runs the annotated functions and reports on whether each test function passes or fails. Whenever we make a new library project with Cargo, a test module with a test function in it is automatically generated for us.<br>
+Here is an example test function that uses the `assert_eq!` macro to assert the test result is correct.
+```
+#[test]
+fn it_works() {
+    let result = add(2, 2);
+    assert_eq!(result, 4); // We give the 'assert!' macro arguments that evaluate to a Boolean. If the value is 'true', nothing happens and the test passes. If the value is 'false', the 'assert!' macro calls 'panic!' to cause the test to fail.
+}
+```
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
