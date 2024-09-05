@@ -979,6 +979,39 @@ Iterators, although a high-level abstraction, get compiled down to roughly the s
 In general, C++ implementations obey the zero-overhead principle: What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better. Rust tries to be fast like C and C++.<br>
 The implementations of closures and iterators are such that runtime performance is not affected. This is part of Rust’s goal to strive to provide zero-cost abstractions.
 
+### More About Cargo and Crates.io
+So far we’ve used only the most basic features of Cargo to build, run, and test our code, but it can do a lot more.
+
+In Rust, 'release profiles' are predefined and customizable profiles with different configurations that allow a programmer to have more control over various options for compiling code.<br>
+Cargo has two main profiles: the 'dev' profile Cargo uses when you run cargo build and the 'release' profile Cargo uses when you run cargo build --release. The 'dev' profile is defined with good defaults for development, and the 'release' profile has good defaults for release builds.<br>
+Cargo has default settings for each of the profiles that apply when you haven’t explicitly added any `[profile.*]` sections in the project’s 'Cargo.toml' file. You can override a default setting by adding a different value for it in 'Cargo.toml'. For example, if we want to use optimization level 1 in the development profile, we can add these two lines to our project’s Cargo.toml file.
+```
+[profile.dev]
+opt-level = 1 // The opt-level setting controls the number of optimizations Rust will apply to your code, with a range of 0 to 3. Applying more optimizations extends compiling time.
+```
+For the full list of configuration options and defaults for each profile, see [Cargo’s documentation](https://doc.rust-lang.org/cargo/reference/profiles.html).
+
+We’ve used packages from [crates.io](https://crates.io/) as dependencies of our project, but you can also share your code with other people by publishing your own packages.<br>
+Accurately documenting your packages will help other users know how and when to use them, so it’s worth investing the time to write documentation. Comments are usually done with `//` but documentation comments use `///` and supports markdown notation. Documentation comments are usually written before the function it explains. Running `cargo doc --open` generates an HTML representation from the documentation comments and opens it in a web browser. In those documentation comments it is recommended to have a section for examples, panics (scenarios where the function could panic), errors (errors that return 'Result'), safety (when the function can be unsafe). Running `cargo test` will run the code examples in the documentation as tests too. To document an entire crate/module instead of a single function we can at top of file write comments using `//!`.<br>
+When creating a package and having modules within modules, it may be better to re-export the deeper modules within the top module, to make those deeper modules more visible in the documentation and shorter to include. In the following example `pub use` is used for that.
+```
+//! # Art
+//!
+//! A library for modeling artistic concepts.
+
+pub use self::kinds::PrimaryColor; // Allows direct use of PrimaryColor.
+pub use self::kinds::SecondaryColor;
+pub use self::utils::mix;
+
+pub mod kinds {
+    // --snip--
+}
+
+pub mod utils {
+    // --snip--
+}
+```
+Before you can publish any crates, you need to create an account on 'crates.io' and get an API token. Once you’re logged in, visit your account settings at 'https://crates.io/me/' and retrieve your API key. Then run the `cargo login` command and paste your API key when prompted.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
