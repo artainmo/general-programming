@@ -946,5 +946,15 @@ The Rust community thinks about tests in terms of two main categories: unit test
 The purpose of unit tests is to test each unit of code in isolation from the rest of the code to quickly pinpoint where code is and isn’t working as expected. The convention is to create a module named 'tests' in each file of the 'src' directory to contain the test functions and to annotate the module with `#[cfg(test)] `. This annotation tells Rust to compile and run the test code only when you run `cargo test`. This saves compile time when you only want to build the library and saves space in the resulting compiled artifact because the tests are not included.<br>
 In Rust, integration tests are entirely external to your library. They use your library in the same way any other code would, which means they can only call functions that are part of your library’s public API. Their purpose is to test whether many parts of your library work together correctly. Units of code that work correctly on their own could have problems when integrated, so test coverage of the integrated code is important as well. We create the integration tests in a 'tests' directory next to the 'src' directory, cargo knows to look for integration test files in this directory. Each file in the tests directory is a separate crate, the test functions it contains also need the `#[test]` annotation. To run all the tests in a particular integration test file, use the `--test` argument of `cargo test` followed by the name of the file.
 
+### Functional Language Features: Iterators and Closures
+Rust’s design has taken inspiration from many existing languages and techniques, and one significant influence is functional programming. Some features of Rust are similar to features found in many functional languages. Those features we will cover are closures and iterators who have the advantage of speed. Pattern matching and enums we already covered and are also influenced by the functional style.
+
+Rust’s closures are anonymous functions you can save in a variable or pass as arguments to other functions.<br>
+```
+let add_one_v2 = |x: u32| -> u32 { x + 1 }; // Verbose closure definition.
+let add_one_v3 = |x|             { x + 1 }; // Type annotations are optional in closures as the compiler can infer the types.
+let add_one_v4 = |x|               x + 1  ; // Because function body only has one expression the brackets are optional.
+```
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
