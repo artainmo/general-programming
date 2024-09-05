@@ -938,6 +938,10 @@ We can also use custom error messages.
 ```
 The function attribute `#[should_panic]` indicates the test passes if the code inside the function panics. We can be even more precise and indicate with what error message the function should panic by indicating a substring of that error message, for example `#[should_panic(expected = "less than or equal to 100")]`.
 
+Just as `cargo run` compiles your code and then runs the resulting binary, `cargo test` compiles your code in test mode and runs the resulting test binary.<br>
+When you run multiple tests, by default they run in parallel using threads, meaning they finish running faster. When running in parallel the different tests cannot share the same state, if they do you should indicate the use of only one thread `cargo test -- --test-threads=1`.<br>
+Running all the tests can sometimes take a long time, sometimes when only working on specific code part you may only want to pass certain tests. You can choose which tests to run by passing `cargo test` the name of the test's function you want to run as an argument. We can also specify part of a test name, and any test whose name matches that value will be run. Within code you can also use the attribute `#[ignore]` on test functions you don't want to execute. If you want to run all tests whether they’re ignored or not, you can run `cargo test -- --include-ignored`.
+
 
 
 ## Resources
