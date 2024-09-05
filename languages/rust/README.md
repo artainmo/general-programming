@@ -949,12 +949,36 @@ In Rust, integration tests are entirely external to your library. They use your 
 ### Functional Language Features: Iterators and Closures
 Rust’s design has taken inspiration from many existing languages and techniques, and one significant influence is functional programming. Some features of Rust are similar to features found in many functional languages. Those features we will cover are closures and iterators who have the advantage of speed. Pattern matching and enums we already covered and are also influenced by the functional style.
 
-Rust’s closures are anonymous functions you can save in a variable or pass as arguments to other functions.<br>
+Rust’s closures are anonymous functions you can save in a variable or pass as arguments to other functions.
 ```
 let add_one_v2 = |x: u32| -> u32 { x + 1 }; // Verbose closure definition.
 let add_one_v3 = |x|             { x + 1 }; // Type annotations are optional in closures as the compiler can infer the types.
 let add_one_v4 = |x|               x + 1  ; // Because function body only has one expression the brackets are optional.
 ```
+
+An iterator allows iterating over a sequence of elements until the end of the sequence.
+```
+let v1 = vec![1, 2, 3];
+
+let v1_iter = v1.iter(); // Create an iterator from the vector sequence.
+
+for val in v1_iter { // Iterate over next element after next loop automatically.
+    println!("Got: {val}");
+}
+```
+Iterators contain the 'next' method, which returns one item of the iterator at a time wrapped in 'Some' of 'Option' enum, or when iteration is over it returns 'None'. Each call to 'next' eats up an item from the iterator, so that on its next call the following item is returned.<br>
+The values returned from an iterator are immutable references. If we want to iterate over mutable references we can use the method `.iter_mut()` instead of `.iter()`.<br>
+Iterator adaptors are methods defined on the Iterator trait that don’t consume the iterator. Instead, they produce different iterators by changing some aspect of the original iterator. For example the 'map' method takes a function that changes each element of an iterator.
+```
+let v1: Vec<i32> = vec![1, 2, 3];
+
+let v2: Vec<_> = v1.iter().map(|x| x + 1).collect(); // 'collect' is necessary to collect the resulting values into a collection data type.
+```
+
+Iterators, although a high-level abstraction, get compiled down to roughly the same code as if you’d written the lower-level code yourself. Iterators are one of Rust’s zero-cost abstractions, by which we mean using the abstraction imposes no additional runtime overhead.<br>
+In general, C++ implementations obey the zero-overhead principle: What you don’t use, you don’t pay for. And further: What you do use, you couldn’t hand code any better. Rust tries to be fast like C and C++.<br>
+The implementations of closures and iterators are such that runtime performance is not affected. This is part of Rust’s goal to strive to provide zero-cost abstractions.
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
