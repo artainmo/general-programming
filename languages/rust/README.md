@@ -1045,5 +1045,14 @@ Notice that a workspace has only one 'Cargo.lock' file at the top level, rather 
 
 The `cargo install` command allows you to install and use binary crates locally. Note that you can only install packages that have binary targets. A binary target is the runnable program that is created if the crate has a 'src/main.rs' file or another file specified as a binary, as opposed to a library target that isn’t runnable on its own but is suitable for including within other programs. All those installed binaries are stored in the root's 'bin' folder. For example rust's implementation of the 'grep' command is called 'ripgrep' and can be installed via cargo like this `cargo install ripgrep`. After you can use the installed command by calling `cargo ripgrep`.
 
+### Smart pointers
+A pointer is a general concept for a variable that contains an address in memory. This address refers to, or points at, some other data.<br>
+The most common kind of pointer in Rust is a reference. They are indicated by the '&' symbol and borrow the value they point to. They don’t have any special capabilities other than referring to data, and have no overhead.<br>
+Smart pointers, on the other hand, are data structures that act like a pointer but also have additional metadata and capabilities. Smart pointers originated in C++ and exist in other languages as well. Rust has a variety of smart pointers defined in the standard library that provide functionality beyond that provided by references.<br>
+While references only borrow data, smart pointers usually own the data they point to.<br>
+The previously seen 'String' and 'Vec<T>' can count as smart pointers because they own some memory and allow you to manipulate it.
+
+The `Box<T>` smart pointer stores data on the heap rather than the stack, what remains on the stack is the pointer to the heap data.
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
