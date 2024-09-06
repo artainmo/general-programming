@@ -1052,7 +1052,11 @@ Smart pointers, on the other hand, are data structures that act like a pointer b
 While references only borrow data, smart pointers usually own the data they point to.<br>
 The previously seen 'String' and 'Vec<T>' can count as smart pointers because they own some memory and allow you to manipulate it.
 
-The `Box<T>` smart pointer stores data on the heap rather than the stack, what remains on the stack is the pointer to the heap data.
+The 'Box<T>' smart pointer stores data on the heap rather than the stack, what remains on the stack is the pointer to the heap data.<br>
+A value of recursive type can have another value of the same type as part of itself. Recursive types pose an issue because at compile time Rust needs to know how much space a type takes up. However, the nesting of values of recursive types could theoretically continue infinitely, so Rust can’t know how much space the value needs. Because boxes have a known size, we can enable recursive types by inserting a box in the recursive type definition. As an example of a recursive type, let’s explore the 'cons list'. This data type comes from the lisp programming language and is like a linked list. It is made up of nested pairs like this `(1, (2, (3, Nil)))`. The 'cons list' isn’t a commonly used data structure in Rust. Most of the time when you have a list of items in Rust, 'Vec<T>' is a better choice to use.<br>
+The 'Box<T>' type is a smart pointer because it implements the 'Deref' trait, which allows 'Box<T>' values to be treated like references. When a 'Box<T>' value goes out of scope, the heap data that the box is pointing to is cleaned up as well because of the 'Drop' trait implementation.
+
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
