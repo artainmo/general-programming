@@ -1043,5 +1043,7 @@ rand = "0.8.5" // This is a dependency to an external package.
 ```
 Notice that a workspace has only one 'Cargo.lock' file at the top level, rather than having a 'Cargo.lock' in each crate’s directory. This ensures that all crates are using the same version of all dependencies, making them compatible. 
 
+The `cargo install` command allows you to install and use binary crates locally. Note that you can only install packages that have binary targets. A binary target is the runnable program that is created if the crate has a 'src/main.rs' file or another file specified as a binary, as opposed to a library target that isn’t runnable on its own but is suitable for including within other programs. All those installed binaries are stored in the root's 'bin' folder. For example rust's implementation of the 'grep' command is called 'ripgrep' and can be installed via cargo like this `cargo install ripgrep`. After you can use the installed command by calling `cargo ripgrep`.
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
