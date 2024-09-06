@@ -1011,7 +1011,37 @@ pub mod utils {
     // --snip--
 }
 ```
-Before you can publish any crates, you need to create an account on 'crates.io' and get an API token. Once you’re logged in, visit your account settings at 'https://crates.io/me/' and retrieve your API key. Then run the `cargo login` command and paste your API key when prompted.
+Before you can publish any crates, you need to create an account on 'crates.io' and get an API token. Once you’re logged in, visit your account settings at 'https://crates.io/me/' and retrieve your API key. Then run the `cargo login` command and paste your API key when prompted.<br>
+If you want to publish a crate, you need to add some metadata in the `[package]` section of the crate's 'Cargo.toml' file.
+```
+[package]
+name = "guessing_game" // The crate will need a name that is unique on 'crates.io'.
+version = "0.1.0"
+edition = "2021"
+description = "A fun game where you guess what number the computer has chosen."
+license = "MIT" // For the license field, you need to give a license identifier value.
+```
+Now you can run `cargo publish`. Be careful, because a publish is permanent. The version can never be overwritten, and the code cannot be deleted. However, it is possible to prevent any future projects from adding the crate as a new dependency, we call this yanking a crate version, this is useful when a crate version is broken.<br>
+When you’ve made changes to your crate and are ready to release a new version, you change the version value specified in your 'Cargo.toml' file and republish.
+
+As your project develops, you might find that the library crate continues to get bigger and you want to split your package further into multiple library crates. Cargo offers a feature called workspaces that can help manage multiple related packages that are developed in tandem.<br>
+A workspace is a set of packages that share the same 'Cargo.lock' and output directory. If each crate had its own target directory, each crate would have to recompile each of the other crates in the workspace to place the artifacts in its own target directory. By sharing one target directory, the crates can avoid unnecessary rebuilding.<br>
+To create a workspace, first create a directory with a 'Cargo.toml' file that contains a `[workspace]` section instead of a `[package]` section. Then use `cargo new` to create the underlying packages and `cargo build` to build the workspace.
+```
+[workspace]
+
+members = [
+    "adder", // Specify the path to underlying packages.
+    "add_one",
+]
+```
+Cargo doesn’t assume that crates in a workspace will depend on each other, so we need to be explicit about the dependency relationships.
+```
+[dependencies]
+add_one = { path = "../add_one" } // Now the other crates can use 'add_one'.
+rand = "0.8.5" // This is a dependency to an external package.
+```
+Notice that a workspace has only one 'Cargo.lock' file at the top level, rather than having a 'Cargo.lock' in each crate’s directory. This ensures that all crates are using the same version of all dependencies, making them compatible. 
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
