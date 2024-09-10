@@ -1071,7 +1071,7 @@ Via immutable references, 'Rc<T>' allows you to share data between multiple part
 'RefCell<T>' can either hold one mutable reference or multiple immutable references. With references and 'Box<T>' the borrowing rules are enforced at compile time, but with 'RefCell<T>' those are enforced at runtime. This means that instead of compilation errors, when breaking the rules with 'RefCell<T>', your program will panic and exit while running.<br>
 Similar to 'Rc<T>', 'RefCell<T>' is only for use in single-threaded scenarios.<br>
 
-
+To recapitulate.<br>
 'Rc<T>' enables multiple owners of the same data, 'Box<T>' and 'RefCell<T>' have single owners.
 'Box<T>' allows immutable or mutable borrows checked at compile time, 'Rc<T>' allows only immutable borrows checked at compile time, 'RefCell<T>' allows immutable or mutable borrows checked at runtime.
 Because 'RefCell<T>' allows mutable borrows checked at runtime, you can mutate the value inside the 'RefCell<T>' even when the 'RefCell<T>' is immutable.
