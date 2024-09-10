@@ -1070,11 +1070,50 @@ Via immutable references, 'Rc<T>' allows you to share data between multiple part
 'Interior mutability' is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data. Normally, this action is disallowed by the borrowing rules. To mutate data, the pattern uses 'unsafe code' inside a data structure to bend Rust’s usual rules that govern mutation and borrowing. 'Unsafe code' indicates to the compiler that we’re checking the rules manually instead of relying on the compiler to check them for us. Let’s explore this concept by looking at the 'RefCell<T>' type that follows the 'interior mutability' pattern.<br>
 'RefCell<T>' can either hold one mutable reference or multiple immutable references. With references and 'Box<T>' the borrowing rules are enforced at compile time, but with 'RefCell<T>' those are enforced at runtime. This means that instead of compilation errors, when breaking the rules with 'RefCell<T>', your program will panic and exit while running.<br>
 Similar to 'Rc<T>', 'RefCell<T>' is only for use in single-threaded scenarios.<br>
+There are situations in which it would be useful for a value to mutate itself in its methods but appear immutable to other code. Code outside the value’s methods would not be able to mutate the value. Using 'RefCell<T>' is one way to get the ability to have interior mutability.<br>
+When creating immutable and mutable references, we use the '&' and '&mut' syntax, respectively. With 'RefCell<T>', we use the 'borrow' and 'borrow_mut' methods. The borrow method returns the smart pointer type 'Ref<T>', and 'borrow_mut' returns the smart pointer type 'RefMut<T>'. Both types implement 'Deref', so we can treat them like regular references. If we try to violate these rules, rather than getting a compiler error as we would with references, the implementation of 'RefCell<T>' will panic at runtime.
+```
+impl Messenger for MockMessenger {
+        fn send(&self, message: &str) {
+            // The creation of two mutable borrows within same scope will create a runtime error.
+            let mut one_borrow = self.sent_messages.borrow_mut(); 
+            let mut two_borrow = self.sent_messages.borrow_mut();
+
+            one_borrow.push(String::from(message));
+            two_borrow.push(String::from(message));
+        }
+}
+```
+The 'RefCell<T>' keeps track of how many 'Ref<T>' and 'RefMut<T>' smart pointers are currently active. Every time we call 'borrow', the 'RefCell<T>' increases its count of how many immutable borrows are active. When a 'Ref<T>' value goes out of scope, the count of immutable borrows goes down by one. Just like the compile-time borrowing rules, 'RefCell<T>' lets us have many immutable borrows or one mutable borrow at any point in time.<br>
+A common way to use 'RefCell<T>' is in combination with 'Rc<T>'. Recall that 'Rc<T>' lets you have multiple owners of some data, but it only gives immutable access to that data. If you have an 'Rc<T>' that holds a 'RefCell<T>', you can get a value that can have multiple owners and that you can mutate.
+```
+use crate::List::{Cons, Nil};
+use std::cell::RefCell;
+use std::rc::Rc;
+
+fn main() {
+    let value = Rc::new(RefCell::new(5));
+    //We need to clone 'value' so both 'a' and 'value' have ownership of the inner 5 value. 
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+    //We wrap the list 'a' in an 'Rc<T>' so when we create lists 'b' and 'c', they can both refer to 'a'.
+    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+    //The 'borrow_mut' method returns a 'RefMut<T>' smart pointer, and we use the dereference operator on it and change the inner value.
+    *value.borrow_mut() += 10;
+    //When we print 'a', 'b', and 'c', we can see that they all have the modified value of 15 rather than 5.
+    println!("a after = {a:?}");
+    println!("b after = {b:?}");
+    println!("c after = {c:?}");
+}
+```
+'RefCell<T>' adds usage flexibility but while compromising program speed.
 
 To recapitulate.<br>
 'Rc<T>' enables multiple owners of the same data, 'Box<T>' and 'RefCell<T>' have single owners.
 'Box<T>' allows immutable or mutable borrows checked at compile time, 'Rc<T>' allows only immutable borrows checked at compile time, 'RefCell<T>' allows immutable or mutable borrows checked at runtime.
 Because 'RefCell<T>' allows mutable borrows checked at runtime, you can mutate the value inside the 'RefCell<T>' even when the 'RefCell<T>' is immutable.
+
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
