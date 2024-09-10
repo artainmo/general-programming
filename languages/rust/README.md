@@ -1056,8 +1056,10 @@ The 'Box<T>' smart pointer stores data on the heap rather than the stack, what r
 A value of recursive type can have another value of the same type as part of itself. Recursive types pose an issue because at compile time Rust needs to know how much space a type takes up. However, the nesting of values of recursive types could theoretically continue infinitely, so Rust can’t know how much space the value needs. Because boxes have a known size, we can enable recursive types by inserting a box in the recursive type definition. As an example of a recursive type, let’s explore the 'cons list'. This data type comes from the lisp programming language and is like a linked list. It is made up of nested pairs like this `(1, (2, (3, Nil)))`. The 'cons list' isn’t a commonly used data structure in Rust. Most of the time when you have a list of items in Rust, 'Vec<T>' is a better choice to use.<br>
 The 'Box<T>' type is a smart pointer because it implements the 'Deref' trait, which allows 'Box<T>' values to be treated like references. When a 'Box<T>' value goes out of scope, the heap data that the box is pointing to is cleaned up as well because of the 'Drop' trait implementation.
 
+Implementing the 'Deref' trait allows you to customize the behavior of the dereference operator '*'. This operator is used to access the value the reference points to instead of the reference itself.
 
-
+Implementing the 'Drop' trait lets you customize what happens when a value is about to go out of scope. With smart pointers 'Drop' is often used to deallocate the memory they point to. Besides smart pointers, 'Drop' is also used to free memory from other resources such as file handles, sockets, locks.<br>
+Even if drop is usually called automatically when going out of scope, it is also possible to call it manually. You may want to call it manually for example when wanting to release/free a lock for other code in same scope to acquire the lock. However, to avoid a double free you cannot call the 'Drop' method itself manually, instead you should call the `std::mem::drop` function that takes the value we want to free early.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
