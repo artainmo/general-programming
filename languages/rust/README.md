@@ -1061,5 +1061,20 @@ Implementing the 'Deref' trait allows you to customize the behavior of the deref
 Implementing the 'Drop' trait lets you customize what happens when a value is about to go out of scope. With smart pointers 'Drop' is often used to deallocate the memory they point to. Besides smart pointers, 'Drop' is also used to free memory from other resources such as file handles, sockets, locks.<br>
 Even if drop is usually called automatically when going out of scope, it is also possible to call it manually. You may want to call it manually for example when wanting to release/free a lock for other code in same scope to acquire the lock. However, to avoid a double free you cannot call the 'Drop' method itself manually, instead you should call the `std::mem::drop` function that takes the value we want to free early.
 
+'Rc<T>' is an abbreviation for reference counting and it enables multiple owners on a single value. It keeps track of the number of references to a value to determine whether or not the value is still in use. If there are zero references to a value, the value can be cleaned up without any references becoming invalid.<br>
+Note that 'Rc<T>' is only for use in single-threaded scenarios. In multi-threaded programs, reference counting is done differently.<br>
+To create the first owner use `Rc::new(variable)` and for the next owners use `Rc::clone(&variableToClone)`. When using 'Rc:clone' we don't create a deep copy but instead simply increment the reference count which is fast.<br>
+Calling the `Rc::strong_count` function displays the reference count.<br>
+Via immutable references, 'Rc<T>' allows you to share data between multiple parts of your program for reading only.
+
+'Interior mutability' is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data. Normally, this action is disallowed by the borrowing rules. To mutate data, the pattern uses 'unsafe code' inside a data structure to bend Rust’s usual rules that govern mutation and borrowing. 'Unsafe code' indicates to the compiler that we’re checking the rules manually instead of relying on the compiler to check them for us. Let’s explore this concept by looking at the 'RefCell<T>' type that follows the 'interior mutability' pattern.<br>
+'RefCell<T>' can either hold one mutable reference or multiple immutable references. With references and 'Box<T>' the borrowing rules are enforced at compile time, but with 'RefCell<T>' those are enforced at runtime. This means that instead of compilation errors, when breaking the rules with 'RefCell<T>', your program will panic and exit while running.<br>
+Similar to 'Rc<T>', 'RefCell<T>' is only for use in single-threaded scenarios.<br>
+
+
+'Rc<T>' enables multiple owners of the same data, 'Box<T>' and 'RefCell<T>' have single owners.
+'Box<T>' allows immutable or mutable borrows checked at compile time, 'Rc<T>' allows only immutable borrows checked at compile time, 'RefCell<T>' allows immutable or mutable borrows checked at runtime.
+Because 'RefCell<T>' allows mutable borrows checked at runtime, you can mutate the value inside the 'RefCell<T>' even when the 'RefCell<T>' is immutable.
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
