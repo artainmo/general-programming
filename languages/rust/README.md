@@ -1109,11 +1109,14 @@ fn main() {
 'RefCell<T>' adds usage flexibility but while compromising program speed.
 
 To recapitulate.<br>
-'Rc<T>' enables multiple owners of the same data, 'Box<T>' and 'RefCell<T>' have single owners.
-'Box<T>' allows immutable or mutable borrows checked at compile time, 'Rc<T>' allows only immutable borrows checked at compile time, 'RefCell<T>' allows immutable or mutable borrows checked at runtime.
-Because 'RefCell<T>' allows mutable borrows checked at runtime, you can mutate the value inside the 'RefCell<T>' even when the 'RefCell<T>' is immutable.
+'Rc<T>' enables multiple owners of the same data, 'Box<T>' and 'RefCell<T>' have single owners.<br>
+'Box<T>' allows immutable or mutable borrows checked at compile time, 'Rc<T>' allows only immutable borrows checked at compile time, 'RefCell<T>' allows immutable or mutable borrows checked at runtime.<br>
+Because 'RefCell<T>' allows mutable borrows checked at runtime, you can mutate the value inside the 'RefCell<T>' even when the 'RefCell<T>' is immutable.<br>
+The 'Box<T>' type has a known size and points to data allocated on the heap. The 'Rc<T>' type keeps track of the number of references to data on the heap so that data can have multiple owners. The 'RefCell<T>' type with its interior mutability gives us a type that we can use when we need an immutable type but need to change an inner value of that type, it also enforces the borrowing rules at runtime instead of at compile time.
 
-
+A memory leak refers to memory that is accidentally never cleaned up. Rust’s memory safety guarantees make it difficult, but not impossible, to accidentally create a memory leak.<br>
+We can see that Rust allows memory leaks by using 'Rc<T>' and 'RefCell<T>'. It’s possible to create references where items refer to each other in a cycle. This creates memory leaks because the reference count of each item in the cycle will never reach 0, and the values will never be dropped. We call this a reference cycle.<br>
+Strong references are how you can share ownership of an 'Rc<T>' instance. Weak references don’t express an ownership relationship, and their count doesn’t affect when an 'Rc<T>' instance is cleaned up. They won’t cause a reference cycle because any cycle involving some weak references will be broken once the strong reference count of values involved is 0. When you call 'Rc::downgrade', you get a smart pointer of type 'Weak<T>'. Instead of increasing the 'strong_count' in the 'Rc<T>' instance by 1, calling 'Rc::downgrade' increases the 'weak_count' by 1. The 'Rc<T>' type uses 'weak_count' to keep track of how many 'Weak<T>' references exist, similar to 'strong_count'. The difference is the 'weak_count' doesn’t need to be 0 for the 'Rc<T>' instance to be cleaned up. Because the value that 'Weak<T>' references might have been dropped, to do anything with the value that a 'Weak<T>' is pointing to, you must make sure the value still exists. Do this by calling the 'upgrade' method on a 'Weak<T>' instance, which will return an 'Option<Rc<T>>'. You’ll get a result of 'Some' if the 'Rc<T>' value has not been dropped yet and a result of 'None' if the 'Rc<T>' value has been dropped.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
