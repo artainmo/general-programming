@@ -1282,7 +1282,12 @@ Your options for handling concurrency are not limited to the language or the sta
 The 'Send' marker trait indicates that ownership of values of the type implementing 'Send' can be transferred between threads. Almost every Rust type is 'Send', but there are some exceptions, including 'Rc<T>'.<br>
 The 'Sync' marker trait indicates that it is safe for the type implementing 'Sync' to be referenced from multiple threads. In other words, any type 'T' is 'Sync' if '&T' (an immutable reference to 'T') is 'Send', meaning the reference can be sent safely to another thread. The smart pointers 'Rc<T>', 'RefCell<T>' and the family of related 'Cell<T>' types are not 'Sync'.
 
+### Object-Oriented Programming Features of Rust
+Object-oriented programming (OOP) is a way of modeling programs using the programmatic concept of objects. An object is represented in code via attributes/variables representing its characteristics and methods/functions representing its actions.
 
+Rust is influenced by many programming paradigms, including OOP. Rust contains 'structs' and 'enums' with 'impl' blocks to provide methods on them, this is similar to the object functionality.<br>
+Another aspect commonly associated with OOP is the idea of encapsulation, which refers to some attributes/methods of objects being private, thus only accessible from within the object itself. In Rust everyting is private by default but becomes public when using the 'pub' keyword.<br>
+Inheritance is a mechanism whereby an object can inherit elements from another object’s definition, thus gaining the parent object’s data and behavior without you having to define them again. If a language must have inheritance to be an object-oriented language, then Rust is not one. There is no way to define a 'struct' that inherits the parent 'struct' fields and method implementations without using a macro. However, traits in Rust allow for similar functionality. Inheritance has recently fallen out of favor as a programming design solution in many programming languages because it’s often at risk of sharing more code than necessary. For these reasons, Rust takes the different approach of using trait objects instead of inheritance.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
