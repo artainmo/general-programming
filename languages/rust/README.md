@@ -1289,5 +1289,6 @@ Rust is influenced by many programming paradigms, including OOP. Rust contains '
 Another aspect commonly associated with OOP is the idea of encapsulation, which refers to some attributes/methods of objects being private, thus only accessible from within the object itself. In Rust everyting is private by default but becomes public when using the 'pub' keyword.<br>
 Inheritance is a mechanism whereby an object can inherit elements from another object’s definition, thus gaining the parent object’s data and behavior without you having to define them again. If a language must have inheritance to be an object-oriented language, then Rust is not one. There is no way to define a 'struct' that inherits the parent 'struct' fields and method implementations without using a macro. However, traits in Rust allow for similar functionality. Inheritance has recently fallen out of favor as a programming design solution in many programming languages because it’s often at risk of sharing more code than necessary. For these reasons, Rust takes the different approach of using trait objects instead of inheritance.
 
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
