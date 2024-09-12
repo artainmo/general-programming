@@ -1118,5 +1118,171 @@ A memory leak refers to memory that is accidentally never cleaned up. Rust’s m
 We can see that Rust allows memory leaks by using 'Rc<T>' and 'RefCell<T>'. It’s possible to create references where items refer to each other in a cycle. This creates memory leaks because the reference count of each item in the cycle will never reach 0, and the values will never be dropped. We call this a reference cycle.<br>
 Strong references are how you can share ownership of an 'Rc<T>' instance. Weak references don’t express an ownership relationship, and their count doesn’t affect when an 'Rc<T>' instance is cleaned up. They won’t cause a reference cycle because any cycle involving some weak references will be broken once the strong reference count of values involved is 0. When you call 'Rc::downgrade', you get a smart pointer of type 'Weak<T>'. Instead of increasing the 'strong_count' in the 'Rc<T>' instance by 1, calling 'Rc::downgrade' increases the 'weak_count' by 1. The 'Rc<T>' type uses 'weak_count' to keep track of how many 'Weak<T>' references exist, similar to 'strong_count'. The difference is the 'weak_count' doesn’t need to be 0 for the 'Rc<T>' instance to be cleaned up. Because the value that 'Weak<T>' references might have been dropped, to do anything with the value that a 'Weak<T>' is pointing to, you must make sure the value still exists. Do this by calling the 'upgrade' method on a 'Weak<T>' instance, which will return an 'Option<Rc<T>>'. You’ll get a result of 'Some' if the 'Rc<T>' value has not been dropped yet and a result of 'None' if the 'Rc<T>' value has been dropped.
 
+### Fearless Concurrency
+Concurrent programming, where different parts of a program execute independently, and parallel programming, where different parts of a program execute at the same time, are becoming increasingly important as more computers take advantage of their multiple processors (For this chapter, please mentally substitute 'concurrent and/or parallel' whenever we use 'concurrent'). Historically, programming in these contexts has been difficult and error prone, Rust hopes to change that. By leveraging ownership and type checking, many concurrency errors are compile-time errors in Rust rather than runtime errors. Therefore, rather than making you spend lots of time trying to reproduce the exact circumstances under which a runtime concurrency bug occurs, incorrect code will refuse to compile and present an error explaining the problem. As a result, you can fix your code while you’re working on it rather than potentially after it has been shipped to production. We’ve nicknamed this aspect of Rust fearless concurrency.
+
+In most current operating systems, an executed program’s code is run in a process, and the operating system will manage multiple processes at once. Within a program, you can also have independent parts that run simultaneously. The features that run these independent parts are called threads. For example, a web server could have multiple threads so that it could respond to more than one request at the same time.
+
+Splitting the computation in your program into multiple threads to run multiple tasks at the same time can improve performance, but it also adds complexity.<br> 
+Because threads can run simultaneously, there’s no inherent guarantee about the order in which parts of your code on different threads will run. This can lead to problems, such as:
+* Race conditions, where threads are accessing data or resources in an inconsistent order.<br>
+* Deadlocks, where two threads are waiting for each other, preventing both threads from continuing.<br>
+* Bugs that happen only in certain situations and are hard to reproduce and fix reliably.
+
+To create a new thread, we call the `thread::spawn` function and pass it a closure (anonymous function) containing the code we want to run in the new thread.<br>
+Note that when the main thread of a Rust program completes, all spawned threads are shut down, whether or not they have finished running. We can fix the problem of the spawned thread ending prematurely by saving the return value of 'thread::spawn' in a variable. The return type of 'thread::spawn' is 'JoinHandle'. A 'JoinHandle' is an owned value that, when we call the join method on it, will wait for its thread to finish.
+```
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let handle = thread::spawn(|| {
+        for i in 1..10 {
+            println!("hi number {i} from the spawned thread!");
+            thread::sleep(Duration::from_millis(1)); // The calls to 'thread::sleep' force a thread to stop its execution for a short duration, allowing a different thread to run.
+        }
+    });
+
+    for i in 1..5 {
+        println!("hi number {i} from the main thread!");
+        thread::sleep(Duration::from_millis(1));
+    }
+
+    handle.join().unwrap(); // Calling join on the handle blocks the thread currently running until the thread represented by the handle terminates.
+}
+```
+We’ll often use the 'move' keyword with closures passed to 'thread::spawn' because the closure will then take ownership of the values it uses from the environment, thus transferring ownership of those values from one thread to another.
+```
+use std::thread;
+
+fn main() {
+    let v = vec![1, 2, 3];
+
+    let handle = thread::spawn(move || { //The 'move' keyword is used to allow subsequent use of 'v' within our spawned thread, this also guarantees we won't use 'v' anymore in the main thread.
+        println!("Here's a vector: {v:?}");
+    });
+
+    handle.join().unwrap();
+```
+
+Message passing refers to threads communicating, one thread sending a message to another. A channel is a general programming concept by which data is sent from one thread to another. Rust’s standard library provides an implementation of channels. A channel has a transmitter who sends the message data and a receiver who receives the message data. A channel is said to be closed if either the transmitter or receiver is dropped.<br>
+We create a new channel using the `mpsc::channel` function; mpsc stands for multiple producer, single consumer. In short, the way Rust’s standard library implements channels means a channel can have multiple sending ends that produce values but only one receiving end that consumes those values.
+```
+use std::sync::mpsc;
+use std::thread;
+
+fn main() {
+    let (tx, rx) = mpsc::channel(); // The 'mpsc::channel' function returns a tuple, the first element of which is the sending end (the transmitter) and the second element is the receiving end (the receiver). The abbreviations 'tx' and 'rx' are traditionally used in many fields for transmitter and receiver respectively.
+
+    thread::spawn(move || { // Using 'move' to move 'tx' into the closure so the spawned thread owns 'tx'.
+        let val = String::from("hi");
+        tx.send(val).unwrap(); // The 'send' method returns a 'Result<T, E>' type, so if the receiver has already been dropped and there’s nowhere to send a value, the 'send' operation will return an error. In this example, we’re calling 'unwrap' to panic in case of an error.
+    });
+
+    let received = rx.recv().unwrap(); // 'recv', short for receive, will block the main thread’s execution and wait until a value is sent down the channel. Once a value is sent, 'recv' will return it in a 'Result<T, E>'. When the transmitter closes, 'recv' will return an error to signal that no more values will be coming.
+    println!("Got: {received}");
+}
+```
+Instead of 'recv' we can use 'try_recv' which doesn't block, instead it returns immediately a 'Result<T,E>' containing 'Ok' with message if one is available, else an 'Err' value.<br>
+```
+use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("hi"),
+            String::from("from"),
+            String::from("the"),
+            String::from("thread"),
+        ];
+
+        for val in vals { // We iterate over the strings in the vector and send one every second.
+            tx.send(val).unwrap();
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    for received in rx { // We treat 'rx' as an iterator containing the received values. When the channel closes, the iteration ends.
+        println!("Got: {received}");
+    }
+}
+```
+In the next example we will use multiple threads and transmitters to send messages to one receiver.
+```
+    let (tx, rx) = mpsc::channel();
+
+    let tx1 = tx.clone(); // We clone the transmitter to have one for each thread.
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("hi"),
+            String::from("from"),
+            String::from("the"),
+            String::from("thread"),
+        ];
+
+        for val in vals {
+            tx1.send(val).unwrap(); // In this thread we use the cloned transmitter.
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("more"),
+            String::from("messages"),
+            String::from("for"),
+            String::from("you"),
+        ];
+
+        for val in vals {
+            tx.send(val).unwrap(); // In this thread we use the original transmitter.
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    for received in rx {
+        println!("Got: {received}");
+    }
+```
+
+Instead of sending messages between threads, you can also share data/memory between threads. Shared memory concurrency is like multiple ownership, multiple threads can access the same memory location at the same time. This adds complexity, but mutexes for example can be used to handle this.<br>
+Mutex is an abbreviation of mutual exclusion. It takes the shared data and contains one key to access that data. Only one thread at a time can have the key to access the data. Once a thread is done with the data it must free the key so another thread can use it.
+```
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+fn main() {
+    let counter = Arc::new(Mutex::new(0)); // We create a mutex within an 'Arc' smart pointer which is a smart pointer that is safe to share between threads.
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter); // We clone to have a mutex for each thread.
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap(); // We acquire the value contained by the mutex via the 'lock' method.
+
+            *num += 1; // The value contained in the mutex is mutable.
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result: {}", *counter.lock().unwrap());
+}
+```
+'Mutex<T>' comes with the risk of creating deadlocks. These occur when an operation needs to lock two resources and two threads have each acquired one of the locks, causing them to wait for each other forever.
+
+Your options for handling concurrency are not limited to the language or the standard library, you can write your own concurrency features or use those written by others. However, two concurrency concepts are embedded in the language, the 'std::marker' traits 'Sync' and 'Send'.<br>
+The 'Send' marker trait indicates that ownership of values of the type implementing 'Send' can be transferred between threads. Almost every Rust type is 'Send', but there are some exceptions, including 'Rc<T>'.<br>
+The 'Sync' marker trait indicates that it is safe for the type implementing 'Sync' to be referenced from multiple threads. In other words, any type 'T' is 'Sync' if '&T' (an immutable reference to 'T') is 'Send', meaning the reference can be sent safely to another thread. The smart pointers 'Rc<T>', 'RefCell<T>' and the family of related 'Cell<T>' types are not 'Sync'.
+
+
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
