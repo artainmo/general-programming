@@ -1410,8 +1410,35 @@ fn main() {
     }
 }
 ```
-If you create a variable but don’t use it anywhere, Rust will usually issue a warning because an unused variable could be a bug. However, sometimes it’s useful to be able to create a variable you won’t use yet, such as when you’re prototyping or just starting a project. In this situation, you can tell Rust not to warn you about the unused variable by starting the name of the variable with an underscore.
+If you create a variable but don’t use it anywhere, Rust will usually issue a warning because an unused variable could be a bug. However, sometimes it’s useful to be able to create a variable you won’t use yet, such as when you’re prototyping or just starting a project. In this situation, you can tell Rust not to warn you about the unused variable by starting the name of the variable with an underscore.<br>
+A match guard is an additional 'if' condition, specified after the pattern in a match arm, that must also match for that arm to be chosen.
+```
+let num = Some(4);
 
+match num {
+    Some(x) if x % 2 == 0 => println!("The number {x} is even"),
+    Some(x) => println!("The number {x} is odd"),
+    None => (),
+}
+```
+The 'at' operator '@' lets us create a variable that holds a value at the same time as we’re testing that value for a pattern match.
+```
+enum Message {
+    Hello { id: i32 },
+}
+
+let msg = Message::Hello { id: 5 };
+
+match msg {
+    Message::Hello {
+        id: id_variable @ 3..=7, //'id_variable' will hold the value that matched the range 3-7 to use it in subsequent expression.
+    } => println!("Found an id in range: {id_variable}"),
+    Message::Hello { id: 10..=12 } => {
+        println!("Found an id in another range")
+    }
+    Message::Hello { id } => println!("Found some other id: {id}"),
+}
+```
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
