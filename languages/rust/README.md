@@ -1360,6 +1360,57 @@ match x {
     _ => println!("something else"),
 }
 ```
+We can also use patterns to destructure structs, enums, and tuples to use different parts of these values.
+```
+fn main() {
+    let p = Point { x: 0, y: 7 };
+
+    let Point { x, y } = p;
+    assert_eq!(0, x);
+    assert_eq!(7, y);
+}
+```
+You can also match nested enums and structs.
+```
+enum Color {
+    Rgb(i32, i32, i32),
+    Hsv(i32, i32, i32),
+}
+
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(Color),
+}
+
+fn main() {
+    let msg = Message::ChangeColor(Color::Hsv(0, 160, 255));
+
+    match msg {
+        Message::ChangeColor(Color::Rgb(r, g, b)) => {
+            println!("Change color to red {r}, green {g}, and blue {b}");
+        }
+        Message::ChangeColor(Color::Hsv(h, s, v)) => {
+            println!("Change color to hue {h}, saturation {s}, value {v}")
+        }
+        _ => (),
+    }
+}
+```
+We can use '_' to ignore a specific value in a pattern or '..' to ignore the remaining values.<br>
+```
+fn main() {
+    let numbers = (2, 4, 8, 16, 32);
+
+    match numbers {
+        (first, .., last) => {
+            println!("Some numbers: {first}, {last}");
+        }
+    }
+}
+```
+If you create a variable but don’t use it anywhere, Rust will usually issue a warning because an unused variable could be a bug. However, sometimes it’s useful to be able to create a variable you won’t use yet, such as when you’re prototyping or just starting a project. In this situation, you can tell Rust not to warn you about the unused variable by starting the name of the variable with an underscore.
 
 
 ## Resources
