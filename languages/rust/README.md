@@ -1308,7 +1308,40 @@ Mixing 'if let', 'else if', 'else if let', and 'else' has the advantage compared
 
 We can also find patterns in loops' conditions. 'let' statements and function parameters also match to a pattern/value.
 
+Patterns that will match for any possible value are irrefutable. An example would be 'x' in the statement `let x = 5;` because 'x' matches anything and therefore cannot fail to match.<br>
+Patterns that can fail to match for some possible value are refutable. An example would be 'Some(x)' in the expression `if let Some(x) = a_value` because if the value in the 'a_value' variable is 'None' rather than 'Some', the 'Some(x)' pattern will not match.<br>
 
+You can match patterns against literals directly.
+```
+let x = 1;
+
+match x {
+    1 => println!("one"),
+    2 => println!("two"),
+    3 => println!("three"),
+    _ => println!("anything"),
+}
+```
+Named variables are irrefutable patterns that match any value.
+```
+let x = Some(5);
+
+match x {
+    Some(50) => println!("Got 50"),
+    Some(y) => println!("Matched, y = {y}"), // Will match the named variable y.
+    _ => println!("Default case, x = {x:?}"),
+}
+```
+In 'match' expressions, you can match multiple patterns using the '|' syntax, which is the pattern 'or' operator.
+```
+let x = 1;
+
+match x {
+    1 | 2 => println!("one or two"),
+    3 => println!("three"),
+    _ => println!("anything"),
+}
+```
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
