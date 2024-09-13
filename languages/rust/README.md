@@ -1289,6 +1289,26 @@ Rust is influenced by many programming paradigms, including OOP. Rust contains '
 Another aspect commonly associated with OOP is the idea of encapsulation, which refers to some attributes/methods of objects being private, thus only accessible from within the object itself. In Rust everyting is private by default but becomes public when using the 'pub' keyword.<br>
 Inheritance is a mechanism whereby an object can inherit elements from another object’s definition, thus gaining the parent object’s data and behavior without you having to define them again. If a language must have inheritance to be an object-oriented language, then Rust is not one. There is no way to define a 'struct' that inherits the parent 'struct' fields and method implementations without using a macro. However, traits in Rust allow for similar functionality. Inheritance has recently fallen out of favor as a programming design solution in many programming languages because it’s often at risk of sharing more code than necessary. For these reasons, Rust takes the different approach of using trait objects instead of inheritance.
 
+You can use trait objects to get some object-oriented features in Rust. Dynamic dispatch is the process of selecting which implementation of a polymorphic operation to call at run time. Dynamic dispatch can give your code some flexibility in exchange for a bit of runtime performance. You can use this flexibility to implement object-oriented patterns that can help your code’s maintainability. Rust also has other features, like ownership, that object-oriented languages don’t have. An object-oriented pattern won’t always be the best way to take advantage of Rust’s strengths, but is an available option.
+
+### Patterns and Matching
+Patterns are a special syntax in Rust for matching against the structure of types. Using patterns in conjunction with 'match' expressions and other constructs gives you more control over a program’s control flow.
+
+We use patterns in the arms of 'match' expressions like this.
+```
+match VALUE {
+    PATTERN => EXPRESSION,
+    PATTERN => EXPRESSION,
+    PATTERN => EXPRESSION,
+}
+```
+One requirement for 'match' expressions is that they need to be exhaustive in the sense that all possibilities for the value in the match expression must be accounted for. One way to ensure you’ve covered every possibility is to have a catchall pattern for the last arm. The particular pattern '_' will match anything.
+
+Mixing 'if let', 'else if', 'else if let', and 'else' has the advantage compared to 'match' that it can compare multiple values instead of one.
+
+We can also find patterns in loops' conditions. 'let' statements and function parameters also match to a pattern/value.
+
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
