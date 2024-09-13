@@ -1328,7 +1328,7 @@ let x = Some(5);
 
 match x {
     Some(50) => println!("Got 50"),
-    Some(y) => println!("Matched, y = {y}"), // Will match the named variable y.
+    Some(y) => println!("Matched, y = {y}"), //Will match the named variable y.
     _ => println!("Default case, x = {x:?}"),
 }
 ```
@@ -1342,6 +1342,25 @@ match x {
     _ => println!("anything"),
 }
 ```
+The '..=' syntax allows us to match to an inclusive range of values.
+```
+let x = 5;
+
+match x {
+    1..=5 => println!("one through five"), //If x is 1, 2, 3, 4, or 5, the first arm will match.
+    _ => println!("something else"),
+}
+```
+```
+let x = 'c';
+
+match x {
+    'a'..='j' => println!("early ASCII letter"),
+    'k'..='z' => println!("late ASCII letter"),
+    _ => println!("something else"),
+}
+```
+
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
