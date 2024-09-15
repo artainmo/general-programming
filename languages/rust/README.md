@@ -1440,5 +1440,43 @@ match msg {
 }
 ```
 
+### Advanced Features
+#### Unsafe Rust
+All the code we’ve discussed so far has had Rust’s memory safety guarantees enforced at compile time. However, Rust has a second language hidden inside it that doesn’t enforce these memory safety guarantees, it’s called unsafe Rust and works just like regular Rust, but gives us extra superpowers.<br>
+Although the code might be okay, if the Rust compiler doesn’t have enough information to be confident, it will reject the code. In these cases, you can use unsafe code to tell the compiler, “Trust me, I know what I’m doing.”. Be warned, however, that you use unsafe Rust at your own risk.<br>
+To switch to unsafe Rust, use the 'unsafe' keyword and then start a new block that holds the unsafe code. You can take five actions in unsafe Rust that you can’t in safe Rust, which we call unsafe superpowers. Those superpowers include the ability to:<br>
+* Dereference a raw pointer<br>
+* Call an unsafe function or method<br>
+* Access or modify a mutable static variable<br>
+* Implement an unsafe trait<br>
+* Access fields of a union<br>
+Keep unsafe blocks small.
+
+The compiler always ensures references to be valid. Unsafe Rust has two new types called raw pointers that are similar to references. As with references, raw pointers can be immutable or mutable and are written as '*const T' and '*mut T', respectively. The asterisk isn’t the dereference operator; it’s part of the type name. In the context of raw pointers, immutable means that the pointer can’t be directly assigned to after being dereferenced. Different from references and smart pointers, raw pointers:<br>
+* Are allowed to ignore the borrowing rules by having both immutable and mutable pointers or multiple mutable pointers to the same location<br>
+* Aren’t guaranteed to point to valid memory<br>
+* Are allowed to be null<br>
+* Don’t implement any automatic cleanup
+
+How to create and use an immutable and a mutable raw pointer from references.
+```
+let mut num = 5;
+
+let r1 = &num as *const i32; // We’ve created raw pointers by using 'as' to cast an immutable and a mutable reference into their corresponding raw pointer types. 
+let r2 = &mut num as *mut i32;
+
+unsafe { // We can create raw pointers in safe code, but we can’t dereference raw pointers and read the data being pointed to in safe code.
+    println!("r1 is: {}", *r1);
+    println!("r2 is: {}", *r2);
+}
+```
+
+Raw pointers are useful when interfacing with C code or when building up safe abstractions that the borrow checker doesn't understand.
+
+#### Advanced Traits
+#### Advanced Types
+#### Advanced Functions and Closures
+#### Macros
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
