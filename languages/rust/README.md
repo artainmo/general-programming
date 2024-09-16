@@ -1544,9 +1544,22 @@ impl Iterator for Counter {
 ```
 The difference with generics, is that with generics you can define a different type on each function call while with associated types we only define a type once in the 'impl' block.
 
-
+Sometimes, you might write a trait definition that depends on another trait, for a type to implement the first trait, you want to require that type to also implement the second trait. You would do this so that your trait definition can make use of the associated items of the second trait. The trait your trait definition is relying on is called a supertrait of your trait.
 
 #### Advanced Types
+Rust provides the ability to declare a type alias to give an existing type another name. For this we use the 'type' keyword. For example, we can create the alias 'Kilometers' to 'i32' like so `type Kilometers = i32;` or `type Thunk = Box<dyn Fn() + Send + 'static>;`.
+
+Rust has a special type named '!' that’s known in type theory lingo as the empty type because it has no values. We prefer to call it the never type because it stands in the place of the return type when a function will never return.
+```
+fn bar() -> ! {
+    // --snip--
+}
+```
+
+Dynamically sized types (DSTs) also called unsized types, let us write code using values whose size we can know only at runtime.<br>
+'str' is a DTS because we do not know its size until runtime.<br>
+To work with DSTs, Rust provides the 'Sized' trait to determine whether or not a type’s size is known at compile time. This trait is automatically implemented for everything whose size is known at compile time.
+
 #### Advanced Functions and Closures
 #### Macros
 
