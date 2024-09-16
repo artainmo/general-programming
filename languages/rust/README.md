@@ -1545,6 +1545,7 @@ impl Iterator for Counter {
 The difference with generics, is that with generics you can define a different type on each function call while with associated types we only define a type once in the 'impl' block.
 
 
+
 #### Advanced Types
 #### Advanced Functions and Closures
 #### Macros
