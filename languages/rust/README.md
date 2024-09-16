@@ -1443,16 +1443,10 @@ match msg {
 ### Advanced Features
 #### Unsafe Rust
 All the code we’ve discussed so far has had Rust’s memory safety guarantees enforced at compile time. However, Rust has a second language hidden inside it that doesn’t enforce these memory safety guarantees, it’s called unsafe Rust and works just like regular Rust, but gives us extra superpowers.<br>
-Although the code might be okay, if the Rust compiler doesn’t have enough information to be confident, it will reject the code. In these cases, you can use unsafe code to tell the compiler, “Trust me, I know what I’m doing.”. Be warned, however, that you use unsafe Rust at your own risk.<br>
-To switch to unsafe Rust, use the 'unsafe' keyword and then start a new block that holds the unsafe code. You can take five actions in unsafe Rust that you can’t in safe Rust, which we call unsafe superpowers. Those superpowers include the ability to:<br>
-* Dereference a raw pointer<br>
-* Call an unsafe function or method<br>
-* Access or modify a mutable static variable<br>
-* Implement an unsafe trait<br>
-* Access fields of a union<br>
-Keep unsafe blocks small.
+Although the code might be okay, if the Rust compiler doesn’t have enough information to be confident, it will reject the code. In these cases, you can use unsafe code to tell the compiler, “Trust me, I know what I’m doing.”. Be warned, however, that you use unsafe Rust at your own risk. It is best to keep unsafe blocks small.<br>
+To switch to unsafe Rust, use the 'unsafe' keyword and then start a new block that holds the unsafe code. You can take five actions in unsafe Rust that you can’t in safe Rust, which we call unsafe superpowers and will discuss below.
 
-The compiler always ensures references to be valid. Unsafe Rust has two new types called raw pointers that are similar to references. As with references, raw pointers can be immutable or mutable and are written as '*const T' and '*mut T', respectively. The asterisk isn’t the dereference operator; it’s part of the type name. In the context of raw pointers, immutable means that the pointer can’t be directly assigned to after being dereferenced. Different from references and smart pointers, raw pointers:<br>
+The compiler always ensures references to be valid. Unsafe Rust has two new types called raw pointers that are similar to references. As with references, raw pointers can be immutable or mutable and are written as '*const T' and '*mut T', respectively. The asterisk isn’t the dereference operator, it’s part of the type name. In the context of raw pointers, immutable means that the pointer can’t be directly assigned to after being dereferenced. Different from references and smart pointers, raw pointers:<br>
 * Are allowed to ignore the borrowing rules by having both immutable and mutable pointers or multiple mutable pointers to the same location<br>
 * Aren’t guaranteed to point to valid memory<br>
 * Are allowed to be null<br>
@@ -1470,7 +1464,6 @@ unsafe { // We can create raw pointers in safe code, but we can’t dereference 
     println!("r2 is: {}", *r2);
 }
 ```
-
 Raw pointers are useful when interfacing with C code or when building up safe abstractions that the borrow checker doesn't understand.
 
 Unsafe functions and methods look exactly like regular functions and methods, but they have an extra 'unsafe' before the rest of the definition `unsafe fn dangerous() {}`. Bodies of unsafe functions are effectively unsafe blocks. 
@@ -1488,16 +1481,52 @@ fn main() {
 }
 ```
 Within the extern 'C' block, we list the names and signatures of external functions from another language we want to call. The 'C' part defines which application binary interface (ABI) the external function uses, the ABI defines how to call the function at the assembly level. The 'C' ABI is the most common and follows the 'C' programming language’s ABI.<br>
-We can also use extern to create an interface that allows other languages to call Rust functions. Instead of creating a whole extern block, we add the extern keyword and specify the ABI to use just before the fn keyword for the relevant function. We also need to add a #[no_mangle] annotation to tell the Rust compiler not to mangle the name of this function. Mangling is when a compiler changes the name we’ve given a function to a different name that contains more information for other parts of the compilation process to consume but is less human readable. Every programming language compiler mangles names slightly differently, so for a Rust function to be nameable by other languages, we must disable the Rust compiler’s name mangling.
+We can also use 'extern' to create an interface that allows other languages to call Rust functions. Instead of creating a whole 'extern' block, we add the 'extern' keyword and specify the ABI to use just before the 'fn' keyword for the relevant function. We also need to add a '#[no_mangle]' annotation to tell the Rust compiler not to mangle the name of this function. Mangling is when a compiler changes the name we’ve given a function to a different name that contains more information for other parts of the compilation process to consume but is less human readable. Every programming language compiler mangles names slightly differently, so for a Rust function to be nameable by other languages, we must disable the Rust compiler’s name mangling.
 ```
-//In the following example, we make the 'call_from_c' function accessible from C code, after it’s compiled to a shared library and linked from C.
+//In the following example, we make the 'call_from_c' function accessible from 'C' code, after it’s compiled to a shared library and linked from 'C'.
 #[no_mangle]
 pub extern "C" fn call_from_c() {
     println!("Just called a Rust function from C!");
 }
 ```
 
+Rust supports global variables, those are called static variables. Static variables are constants and by convention are written in SCREAMING_SNAKE_CASE. However, when using unsafe rust they can be mutated. With mutable data that is globally accessible, it’s difficult to ensure there are no data races, which is why Rust considers mutable static variables to be unsafe. Where possible, it’s preferable to use the concurrency techniques and thread-safe smart pointers.
+```
+static mut COUNTER: u32 = 0;
+
+fn add_to_count(inc: u32) {
+    unsafe {
+        COUNTER += inc;
+    }
+}
+
+fn main() {
+    add_to_count(3);
+
+    unsafe {
+        println!("COUNTER: {COUNTER}");
+    }
+}
+```
+
+We can use 'unsafe' to implement an unsafe trait. A trait is unsafe when at least one of its methods has some invariant that the compiler can’t verify. We declare that a trait is unsafe by adding the unsafe keyword before trait and marking the implementation of the trait as unsafe too.
+```
+unsafe trait Foo {
+    // methods go here
+}
+
+unsafe impl Foo for i32 {
+    // method implementations go here
+}
+```
+
+Unions are primarily used to interface with unions in C code. Accessing union fields is unsafe because Rust can’t guarantee the type of the data currently being stored in the union instance.
+
+Using unsafe to take one of the five actions (superpowers) just discussed isn’t wrong or even frowned upon. When you have a reason to use unsafe code, you can do so, and having the explicit 'unsafe' annotation makes it easier to track down the source of problems when they occur.
+
 #### Advanced Traits
+
+
 #### Advanced Types
 #### Advanced Functions and Closures
 #### Macros
