@@ -1525,6 +1525,24 @@ Unions are primarily used to interface with unions in C code. Accessing union fi
 Using unsafe to take one of the five actions (superpowers) just discussed isn’t wrong or even frowned upon. When you have a reason to use unsafe code, you can do so, and having the explicit 'unsafe' annotation makes it easier to track down the source of problems when they occur.
 
 #### Advanced Traits
+Associated types connect a type placeholder with a trait such that the trait method definitions can use these placeholder types in their signatures.<br>
+One example of a trait with an associated type is the 'Iterator' trait that the standard library provides. The associated type is named 'Item'.
+```
+pub trait Iterator {
+    type Item;
+    //The type 'Item' is a placeholder, and the 'next' method’s definition shows that it will return values of type 'Option<Self::Item>'.
+    fn next(&mut self) -> Option<Self::Item>;
+}
+```
+Implementors of the 'Iterator' trait will specify the concrete type for 'Item', and the 'next' method will return an 'Option' containing a value of that concrete type.
+```
+impl Iterator for Counter {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        // --snip--
+```
+The difference with generics, is that with generics you can define a different type on each function call while with associated types we only define a type once in the 'impl' block.
 
 
 #### Advanced Types
