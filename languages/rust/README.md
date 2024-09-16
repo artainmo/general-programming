@@ -1473,6 +1473,30 @@ unsafe { // We can create raw pointers in safe code, but we can’t dereference 
 
 Raw pointers are useful when interfacing with C code or when building up safe abstractions that the borrow checker doesn't understand.
 
+Unsafe functions and methods look exactly like regular functions and methods, but they have an extra 'unsafe' before the rest of the definition `unsafe fn dangerous() {}`. Bodies of unsafe functions are effectively unsafe blocks. 
+
+Sometimes, your Rust code might need to interact with code written in another language. For this, Rust has the keyword 'extern' that facilitates the creation and use of a Foreign Function Interface (FFI). An FFI is a way for a programming language to define functions and enable a different (foreign) programming language to call those functions. Functions declared within 'extern' blocks are always unsafe to call from Rust code. The reason is that other languages don’t enforce Rust’s rules and guarantees.
+```
+extern "C" {
+    fn abs(input: i32) -> i32; //Integration with the 'abs' function from the 'C' standard library.
+}
+
+fn main() {
+    unsafe {
+        println!("Absolute value of -3 according to C: {}", abs(-3));
+    }
+}
+```
+Within the extern 'C' block, we list the names and signatures of external functions from another language we want to call. The 'C' part defines which application binary interface (ABI) the external function uses, the ABI defines how to call the function at the assembly level. The 'C' ABI is the most common and follows the 'C' programming language’s ABI.<br>
+We can also use extern to create an interface that allows other languages to call Rust functions. Instead of creating a whole extern block, we add the extern keyword and specify the ABI to use just before the fn keyword for the relevant function. We also need to add a #[no_mangle] annotation to tell the Rust compiler not to mangle the name of this function. Mangling is when a compiler changes the name we’ve given a function to a different name that contains more information for other parts of the compilation process to consume but is less human readable. Every programming language compiler mangles names slightly differently, so for a Rust function to be nameable by other languages, we must disable the Rust compiler’s name mangling.
+```
+//In the following example, we make the 'call_from_c' function accessible from C code, after it’s compiled to a shared library and linked from C.
+#[no_mangle]
+pub extern "C" fn call_from_c() {
+    println!("Just called a Rust function from C!");
+}
+```
+
 #### Advanced Traits
 #### Advanced Types
 #### Advanced Functions and Closures
