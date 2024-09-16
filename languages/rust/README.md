@@ -1561,7 +1561,56 @@ Dynamically sized types (DSTs) also called unsized types, let us write code usin
 To work with DSTs, Rust provides the 'Sized' trait to determine whether or not a type’s size is known at compile time. This trait is automatically implemented for everything whose size is known at compile time.
 
 #### Advanced Functions and Closures
+We’ve talked about how to pass closures to functions, but you can also pass regular functions to functions. Passing functions with function pointers will allow you to use functions as arguments to other functions.
+```
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+
+fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 { //The function 'do_twice' takes two parameters: a function pointer to any function that takes an 'i32' parameter and returns an 'i32', and one 'i32' value.
+    f(arg) + f(arg) //The 'do_twice' function calls the function 'f' twice, passing it the 'arg' value, then adds the two function call results together.
+}
+
+fn main() {
+    let answer = do_twice(add_one, 5);
+
+    println!("The answer is: {answer}");
+}
+```
+
 #### Macros
+We’ve used macros like println! throughout this book, but we haven’t fully explored what a macro is and how it works. The term macro refers to a family of features in Rust, consisting of declarative macros and three kinds of procedural macros. We will talk about each.
+
+Fundamentally, macros are a way of writing code that writes other code, which is known as metaprogramming. Macros expand to produce more code than the code you’ve written manually.<br>
+Metaprogramming is useful for reducing the amount of code you have to write and maintain, which is also one of the roles of functions. However, macros have some additional powers that functions don’t. A function signature must declare the number and type of parameters the function has. Macros, on the other hand, can take a variable number of parameters, for example we can call 'println!("hello")' with one argument or 'println!("hello {}", name)' with two arguments. The downside to implementing a macro instead of a function is that macro definitions are more complex than function definitions because you’re writing Rust code that writes Rust code.
+
+The most widely used form of macros in Rust is the declarative macro. At their core, declarative macros allow you to write something similar to a Rust match expression. Macros also compare a value to patterns that are associated with particular code, in this situation, the value is the literal Rust source code passed to the macro, the patterns are compared with the structure of that source code, and the code associated with each pattern, when matched, replaces the code passed to the macro. This all happens during compilation.
+```
+#[macro_export] //Without this annotation, the macro can’t be brought into scope.
+macro_rules! vec { //We start the macro definition with 'macro_rules!' and its name.
+    ( $( $x:expr ),* ) => { //The structure in the 'vec!' body is similar to the structure of a match expression. Here we have one arm with the pattern '( $( $x:expr ),* )', followed by '=>' and the block of code associated with this pattern. If the pattern matches, the associated block of code will be emitted. Given that this is the only pattern in this macro, there is only one valid way to match.
+        {
+            let mut temp_vec = Vec::new();
+            $(
+                temp_vec.push($x); //'temp_vec.push()' within '$()*' is generated for each part that matches '$()' in the pattern zero or more times depending on how many times the pattern matches.
+            )*
+            temp_vec
+        }
+    };
+}
+```
+When we call this macro with `vec![1, 2, 3];`, the `$x` pattern matches three times with the three expressions `1`, `2`, and `3`. The `$x` is replaced with each expression matched. When we call this macro with `vec![1, 2, 3]`, the code generated that replaces this macro call will be the following.
+```
+{
+    let mut temp_vec = Vec::new();
+    temp_vec.push(1);
+    temp_vec.push(2);
+    temp_vec.push(3);
+    temp_vec
+}
+```
+
+The second form of macros is the procedural macro, which acts more like a function (and is a type of procedure). Procedural macros accept some code as an input, operate on that code, and produce some code as an output rather than matching against patterns and replacing the code with other code as declarative macros do.
 
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
