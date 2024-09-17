@@ -1612,5 +1612,38 @@ When we call this macro with `vec![1, 2, 3];`, the `$x` pattern matches three ti
 
 The second form of macros is the procedural macro, which acts more like a function (and is a type of procedure). Procedural macros accept some code as an input, operate on that code, and produce some code as an output rather than matching against patterns and replacing the code with other code as declarative macros do.
 
+### Appendix
+
+#### Appendix A: Keywords
+[Link](https://doc.rust-lang.org/book/appendix-01-keywords.html)
+
+#### Appendix B: Operators and Symbols
+[Link](https://doc.rust-lang.org/book/appendix-02-operators.html)
+
+#### Appendix C: Derivable Traits
+[Link](https://doc.rust-lang.org/book/appendix-03-derivable-traits.html)
+
+#### Appendix D - Useful Development Tools
+The 'rustfmt' tool reformats your code according to the community code style. Many collaborative projects use rustfmt to prevent arguments about which style to use when writing Rust. To install 'rustfmt', enter the following: `rustup component add rustfmt`.
+
+The 'rustfix' tool is included with Rust installations and can automatically fix compiler warnings that have a clear way to correct the problem that’s likely what you want. Error fixes suggested by the compiler can be applied using the command `cargo fix`.
+
+The 'Clippy' tool is a collection of lints to analyze your code so you can catch common mistakes and improve your Rust code.
+```
+rustup component add clippy //Install
+cargo clippy //Run
+```
+An example error it could for example find would be the use of `let x = 3.1415;` instead of Rust's constant `PI`.
+
+Your IDE can gain abilities such as autocompletion, jump to definition, and inline errors, while writing rust, by using 'rust-analyzer' plugin for your IDE.
+
+#### Appendix E - Editions
+[Link](https://doc.rust-lang.org/book/appendix-05-editions.html)
+
+#### Appendix G - How Rust is Made and “Nightly Rust”
+Rust’s development model follows a Request For Comments (RFC) process. If you’d like an improvement in Rust, you can write up a proposal, called an RFC. Anyone can write RFCs to improve Rust, and the proposals are reviewed and discussed by the Rust team, which is comprised of many topic subteams. If the feature is accepted, an issue is opened on the Rust repository, and someone can implement it.
+
+[See more](https://doc.rust-lang.org/book/appendix-07-nightly-rust.html)
+
 ## Resources
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
