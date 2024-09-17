@@ -28,7 +28,9 @@
         - [Appendix A: Keywords](#appendix-a-keywords)
         - [Appendix B: Operators and Symbols](#appendix-b-operators-and-symbols)
         - [Appendix C: Derivable Traits](#appendix-c-derivable-traits)
-      
+        - [Appendix D: Useful Development Tools](#appendix-d-useful-development-tools)
+        - [Appendix E: Editions](#appendix-e-editions)
+        - [Appendix G: How Rust is Made and “Nightly Rust”](#appendix-g-how-rust-is-made-and-nightly-rust)
 - [Resources](#Resources)
 
 ## Free tutorials
