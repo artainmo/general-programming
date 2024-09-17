@@ -2,6 +2,33 @@
 
 ## Table of contents
 - [Free tutorials](#Free-tutorials)
+    - [Introduction](#introduction)
+    - [Common programming concepts](#Common-programming-concepts)
+    - [Understanding Ownership](#Understanding-Ownership)
+    - [Using Structs to structure related data](#Using-Structs-to-structure-related-data)
+    - [Enums and pattern matching](#Enums-and-pattern-matching)
+    - [Managing growing projects with Packages, Crates, and Modules](#managing-growing-projects-with-packages-crates-and-modules)
+    - [Common Collections](#Common-Collections)
+    - [Error Handling](#Error-Handling)
+    - [Generic Types, Traits, and Lifetimes](#generic-types-traits-and-lifetimes)
+    - [Writing automated tests](#Writing-automated-tests)
+    - [Functional Language Features: Iterators and Closures](#functional-language-features-iterators-and-closures)
+    - [More About Cargo and Crates.io](#more-about-cargo-and-cratesio)
+    - [Smart pointers](#Smart-pointers)
+    - [Fearless Concurrency](#Fearless-Concurrency)
+    - [Object-Oriented Programming Features of Rust](#object-oriented-programming-features-of-rust)
+    - [Patterns and Matching](#Patterns-and-Matching)
+    - [Advanced Features](#Advanced-Features)
+        - [Unsafe Rust](#Unsafe-Rust)
+        - [Advanced Traits](#Advanced-Traits)
+        - [Advanced Types](#Advanced-Types)
+        - [Advanced Functions and Closures](#Advanced-Functions-and-Closures)
+        - [Macros](#Macros)
+    - [Appendix](#Appendix)
+        - [Appendix A: Keywords](#appendix-a-keywords)
+        - [Appendix B: Operators and Symbols](#appendix-b-operators-and-symbols)
+        - [Appendix C: Derivable Traits](#appendix-c-derivable-traits)
+      
 - [Resources](#Resources)
 
 ## Free tutorials
@@ -1623,7 +1650,7 @@ The second form of macros is the procedural macro, which acts more like a functi
 #### Appendix C: Derivable Traits
 [Link](https://doc.rust-lang.org/book/appendix-03-derivable-traits.html)
 
-#### Appendix D - Useful Development Tools
+#### Appendix D: Useful Development Tools
 The 'rustfmt' tool reformats your code according to the community code style. Many collaborative projects use rustfmt to prevent arguments about which style to use when writing Rust. To install 'rustfmt', enter the following: `rustup component add rustfmt`.
 
 The 'rustfix' tool is included with Rust installations and can automatically fix compiler warnings that have a clear way to correct the problem that’s likely what you want. Error fixes suggested by the compiler can be applied using the command `cargo fix`.
@@ -1637,10 +1664,10 @@ An example error it could for example find would be the use of `let x = 3.1415;`
 
 Your IDE can gain abilities such as autocompletion, jump to definition, and inline errors, while writing rust, by using 'rust-analyzer' plugin for your IDE.
 
-#### Appendix E - Editions
+#### Appendix E: Editions
 [Link](https://doc.rust-lang.org/book/appendix-05-editions.html)
 
-#### Appendix G - How Rust is Made and “Nightly Rust”
+#### Appendix G: How Rust is Made and “Nightly Rust”
 Rust’s development model follows a Request For Comments (RFC) process. If you’d like an improvement in Rust, you can write up a proposal, called an RFC. Anyone can write RFCs to improve Rust, and the proposals are reviewed and discussed by the Rust team, which is comprised of many topic subteams. If the feature is accepted, an issue is opened on the Rust repository, and someone can implement it.
 
 [See more](https://doc.rust-lang.org/book/appendix-07-nightly-rust.html)
