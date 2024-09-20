@@ -23,4 +23,5 @@ ChatGPT can also be used. It can answer very specific programming questions. Don
 If you cannot find an answer using chatGPT nor Google, last resort is to ask your question on 'StackOverflow'. An answer can come rather quickly after one hour. Make sure to be consice in your question while still giving all the necessary informations, such as showing your codes, what you tried, your conclusions based on that.
 
 #### 3. Experience and general intuition
-By learning multiple languages and having a lot of programming experience, a general intuition develops. This general intuition helps you know what you should do or research.
+By learning multiple languages and having a lot of programming experience, a general intuition develops. This general intuition helps you know what you should do or research.<br>
+But in general, to find a job, it is usually best to be specialized in one domain/language.
