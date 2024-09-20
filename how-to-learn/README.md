@@ -11,14 +11,16 @@ While learning a language I like to take notes. Like [this](https://github.com/a
 Not all features in a programming languages are practical or clean to use. Some can increase the chance of errors occuring, be confusing, or unreadable. So the entirety of a programming language doesn't always have to be learned/used.
 
 #### 2. Practice and know the precise syntax
-practicing by creating complete projects to start learning
-sneak on multiple githubs when starting a new language to be exposed to different coding styles/used-concepts
+Practicing by creating complete projects is a great next step to learn.<br>
+Looking at code solutions of others on github when starting a new language can be a great way to expose oneself to different ways of programming.
 
 ###### 2.1 Find answers on the fly
-Advice should also be given about researching the necessary information or learning on the job, as this is impotant in programming because it is impossible to know all. stackoverflow, geeksforgeeks, grepper, tutorialspoint,... Talk about chatGPT, stackOverflow, GeeksForGeeks, medium, official documentation... On medium if an article is not accessible try opening it in private browser instead.
-Also talk about the grepper plugin and overall importance of google search.
-You can ask very specific programming questions to chatGPT. Don't be afraid to even add your specific code and error messages within your requests. If you are unsure about what chatGPT is recommending, research on google if what he is saying is correct.
-If you cannot find an answer using chatGPT nor Google, last resort is to ask your question on StackOverflow. Answer can come rather quickly after one hour. Make sure to be consice in your question while still giving all the necessary informations, such as showing your codes, what you tried, your conclusions based on that...
+When you know what is possible with a programming language, you know what code solution to use, however, you may not know what exact synax to use. This is normal as it is impossible to know everyting in programming, instead it can be researched on the fly. Actually, even the best code solution could be researched on the fly, or errors.
+
+To research on the fly, 'grepper' is a google chrome plugin I like. It gives code solutions directly on google chrome search questions, those can come from others or even yourself.<br>
+Else, good platforms to find coding solutions and their exact syntax are 'StackOverflow', 'GeeksForGeeks', 'tutorialspoint', 'medium' articles, the official documentation or specific guides of a programming language. Else, take what google search suggests. On medium if an article is not accessible try opening it in private browser instead.<br>
+ChatGPT can also be used. It can answer very specific programming questions. Don't be afraid to even add your specific code and error messages within your requests. If you are unsure about what chatGPT is recommending, research on google if what he is saying is correct.<br>
+If you cannot find an answer using chatGPT nor Google, last resort is to ask your question on 'StackOverflow'. An answer can come rather quickly after one hour. Make sure to be consice in your question while still giving all the necessary informations, such as showing your codes, what you tried, your conclusions based on that.
 
 #### 3. Experience and general intuition
-General intuition by learnign multiple languages
+By learning multiple languages and having a lot of programming experience, a general intuition develops. This general intuition helps you know what you should do or research.
