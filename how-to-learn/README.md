@@ -3,11 +3,12 @@
 ## Tips
 
 #### 1. Learn the fundamental concepts to know what is possible
-It is important to be aware of all the different concepts/possibilities, to first know what is programatically possible, in a second time specifically-how-to can be researched while coding.
-codecademy is a platform I like to learn. 
-While learning a language I like to take notes. Those notes can be used when wanting to learn the language again as a quick reminder.
+It is first important to be aware of all the different concepts within a programming language to know what is possible. Once you know all the possibilities, you know what code solution to use, the specific syntax can be researched later on the fly while programming.
 
-Not all features in all languages are practical or clean, they can increase the chance of errors occuring, be confusing or unreadable, so complete language doesn't has to be learned/used.
+To learn all those concepts, related to a specific programming language, [codecademy](https://www.codecademy.com/) is a platform I like. The official documentation or specific guides of the programming language can also be used.<br>
+While learning a language I like to take notes. Like [this](https://github.com/artainmo/web-development/tree/main/backend/PHP) for example. Those notes can be used when wanting to learn the language again as a quick reminder.
+
+Not all features in a programming languages are practical or clean to use. Some can increase the chance of errors occuring, be confusing, or unreadable. So the entirety of a programming language doesn't always have to be learned/used.
 
 #### 2. Practice and know the precise syntax
 practicing by creating complete projects to start learning
