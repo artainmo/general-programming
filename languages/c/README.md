@@ -1,6 +1,6 @@
 # C
 C is a language where the programmer needs to manage memory himself.<br>
-This makes the language more difficult to write but useful when programming in electronics on systems with limited memory where we want to be able to control memory frugally.
+This makes the language more difficult to write but useful when programming in electronics on systems with limited memory where we want to be able to control memory frugally.<br>
 In this Rust course I talk about [memory management](https://github.com/artainmo/general-programming/tree/main/languages/rust#Understanding-Ownership).
 
 Read the code and comments to learn about the language via those projects ([piscine C](https://github.com/artainmo/c), [libft](https://github.com/artainmo/libft)).<br>
