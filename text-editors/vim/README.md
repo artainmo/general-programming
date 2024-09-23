@@ -1,28 +1,21 @@
---------------------------
-VIM
---------------------------
+# VIM
 
-Primarily used resource;
-https://www.radford.edu/~mhtay/CPSC120/VIM_Editor_Commands.htm
+Vim is an editor used by programmers to edit a text file.<br>
+Its first advantage is that while using it only the keyboard is necessary, thus you don't even need to lift hand to the mouse which is faster.<br>
+Its second advantage is that it is very customizable.<br>
+Its disadvantage is that a learning curve exists for its use.
 
-Vim is an editor to create or edit a text file.
+## Use
 
-There are two modes in vim. One is the command mode and another is the insert mode.
+There are two modes in vim. One is the command mode and another is the insert mode.<br>
+In the command mode, the user can move around the file, delete text, etc.<br>
+In the insert mode, the user can insert text.<br>
+To go from command mode to insert mode use [a text entry command](#).<br>
+To go from insert mode to command mode type 'Esc'.
 
-In the command mode, user can move around the file, delete text, etc.
+## Commands
 
-In the insert mode, user can insert text.
-
-Changing mode from one to another
-
-From command mode to insert mode type a/A/i/I/o/O ( see details below)
-
-From insert mode to command mode type Esc (escape key)
-
-VIM CMDS
---------------------------
-
-*Text Entry Commands (Used to start text entry)
+###### Text Entry Commands (Used to start text entry)
 
 a -> Append text following current cursor position
 
@@ -180,8 +173,7 @@ esc + control-w-w (hold control and tap w two times) to jump between windows
 
 :tabe file -> create new tab
 
-VIM SETUP
---------------------------
+## Setup
 :syntax on -> set color syntax
 :colorscheme pablo -> favorite colorscheme
 :set number -> set numbers
@@ -194,3 +186,6 @@ set shiftwidth=4 -> spaces after returnline indent
 
 
 write down cmds in .vimrc in home directory to constantly have same setup or setup from VIM file by using the CMMs for one-time setup.
+
+## Resources
+[VIM Editor Commands](https://www.radford.edu/~mhtay/CPSC120/VIM_Editor_Commands.htm)
