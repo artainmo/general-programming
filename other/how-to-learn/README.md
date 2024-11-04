@@ -19,7 +19,7 @@ When you know what is possible with a programming language, you know what code s
 
 To research on the fly, 'grepper' is a google chrome plugin I like. It gives code solutions directly on google chrome search questions, those can come from others or even yourself.<br>
 Else, good platforms to find coding solutions and their exact syntax are 'StackOverflow', 'GeeksForGeeks', 'tutorialspoint', 'medium' articles, the official documentation or specific guides of a programming language. Else, take what google search suggests. On medium if an article is not accessible, try opening it in a private browser instead.<br>
-ChatGPT can also be used. It can answer very specific programming questions. Don't be afraid to even add your specific code and error messages within your requests. If you are unsure about what chatGPT is recommending, research on google if what he is saying is correct.<br>
+ChatGPT can also be used. It can answer very specific programming questions. Don't be afraid to even add your specific code and error messages within your requests. If you are unsure about what chatGPT is recommending, research on google if what he is saying is correct. ChatGPT can also generate code for you.<br>
 If you cannot find an answer using chatGPT nor Google, last resort is to ask your question on 'StackOverflow'. An answer can come rather quickly after one hour. Make sure to be consice in your question while still giving all the necessary informations, such as showing your codes, what you tried, your conclusions based on that.
 
 #### 3. Experience and general intuition
