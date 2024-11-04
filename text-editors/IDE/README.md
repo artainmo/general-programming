@@ -1,6 +1,6 @@
 # IDE
 An integrated development environment (IDE) is a software application that helps programmers develop software code efficiently.<br>
-VScode is probably the most popular one with the most plugins and support. But I personally prefer atom, I think out of habit.
+VScode is probably the most popular one with the most plugins and support. But I personally prefer atom, I think out of habit. Atom's advantages are that it is readable, easy to use and does not make you dependent on helpful plug-ins. Lastly, Sublime is fast but not free.
 
 ## Commands
 cmd + right arrow -> cursor to end of line<br>
@@ -31,4 +31,4 @@ Ctrl + g -> go to line<br>
 On VScode you can use the vim extension to enable the use of vim commands within the IDE. The advantage of vim commands is that you don't need to leave your keyboard.
 
 One advantage of IDEs is that they have a lot of plugins in general, but also plugins specific to a programming language to help writing it.<br>
-You can also use AI assistants to help write code.
+You can also use AI assistants to help write code. Instead of using those AI assistants, querying chatGPT may be even better.
