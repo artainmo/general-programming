@@ -1,5 +1,16 @@
 # New: use Claude Code
 
+## Table of contents
+
+- [Introduction](#Introduction)
+  - [What is Claude Code](#What-is-Claude-Code)
+  - [Compared to other harnesses and LLMs](#Compared-to-other-harnesses-and-LLMs)
+  - [How prevalent is its use](#How-prevalent-is-its-use)
+- [How to use](#How-to-use)
+  - [How it works](#How-it-works)
+  - [How students use it at school 42](#How-students-use-it-at-school-42)
+- [References](#References)
+
 ## Introduction
 
 ### What is Claude Code
@@ -24,13 +35,24 @@ Prompt engineering and AI automation engineering are buzzwords that refer to eng
 
 ## How to use
 
-### How students use it at school 42 
-_rperez-t_ Le sujet, le correctif, et le projet, prompt (demander à chatGPT comment faire le prompt qui doit être pour Claude)...
-Newer students 
-Other student (wdeltenre)
+### How it works 
+You can customize your Claude Code with markdown or skill files. The LLM will read those and basically use them as context when answering your prompts. <br>
+Markdown files explain "what". For example you can explain in a 'Claude.md' file what you want Claude to do — for example if you want it to only be pedagogical by explaining code.<br> 
+Skill files explain "how to". You can explain concepts inside a skill file, for example when I say X it means I ask Claude to do Y with Z inside A. It is like text replacement where a word in your prompt becomes a whole explanation of how to do it.
 
-### How it works to build a project from scratch
-README files explain what... Skills explains how to in a file... You can place different agents (LLM with harness (context for LLM, code qui fait tourner le LLM d'une certaine manière)) in different folders so that they each have their own instruction files... You can create an agent that generates tests and executes the tests at the end... Afterwards it can correct the code and retest in a loop... 
+You can even generate the code of a whole project simply by explaining in markdown files what needs to be done and in skill files how so. You can place different agents in different directories so that they each have their own instruction files (markdown and skills files). For example one directory will be responsible for testing, another one for the frontend of the code, and so forth... 
+
+Claude Code can also work alone in a loop until a certain goal is accomplished. For example you can ask it to generate code, generate tests, execute those tests, adapt the code based on tests results, test again, and so forth...
+
+### How students use it at school 42 
+While generating your whole project with Claude Code is technically allowed, the rule is always that you must understand your code. The correction file now asks students to explain code more or even to make live adaptations.
+
+The student _rperez-t_ gives Claude Code the 42 school project subject, correction file, and the project code itself, and prompts/asks CLaude to correct the project and find discrepancies between the subject and project code. He sometimes uses chatGPT to create a good prompt for Claude.<br>
+When asking Claude to code new features he will verify and ask Claude not to use too complicated code but instead use understandable code.
+
+Newer students primarily use Claude within their terminal to get explanations about code or to generate tests. They can use a README (Claude.md) that says Claude should only be used pedagogically to understand how to code and not to just generate code.
+
+Another student uses Claude within VSCode and gives him precise instructions to build new features such as what function to build in what file. He doesn't use _Skills_ or _READMEs_ for Claude. While Skills and READMEs can be very useful, they are more so advanced features who are not necessary to set up for simple use.
 
 ## References
-Learned from 42 Belgium student _edesmed_ and _rperez-t_.
+Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
