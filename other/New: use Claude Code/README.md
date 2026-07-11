@@ -54,5 +54,7 @@ Newer students primarily use Claude within their terminal to get explanations ab
 
 Another student uses Claude within VSCode and gives him precise instructions to build new features such as what function to build in what file. He doesn't use _Skills_ or _READMEs_ for Claude. While Skills and READMEs can be very useful, they are more so advanced features who are not necessary to set up for simple use.
 
+To use Claude Code you at least need a €20 subscription. This gives you a certain amount of tokens that should be enough unless you use it a lot on large projects. Most students use this €20 subscription.
+
 ## References
 Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
