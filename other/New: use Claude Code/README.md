@@ -44,6 +44,8 @@ You can even generate the code of a whole project simply by explaining in markdo
 
 Claude Code can also work alone in a loop until a certain goal is accomplished. For example you can ask it to generate code, generate tests, execute those tests, adapt the code based on tests results, test again, and so forth...
 
+To use Claude Code you at least need a €20 subscription. This gives you a certain amount of tokens that should be enough unless you use it a lot on large projects. Once you have a subscription, you can follow the instructions [here](https://code.claude.com/docs/en/overview) to use Claude Code.
+
 ### How students use it at school 42 
 While generating your whole project with Claude Code is technically allowed, the rule is always that you must understand your code. The correction file now asks students to explain code more or even to make live adaptations.
 
@@ -53,8 +55,6 @@ When asking Claude to code new features he will verify and ask Claude not to use
 Newer students primarily use Claude within their terminal to get explanations about code or to generate tests. They can use a README (Claude.md) that says Claude should only be used pedagogically to understand how to code and not to just generate code.
 
 Another student uses Claude within VSCode and gives him precise instructions to build new features such as what function to build in what file. He doesn't use _Skills_ or _READMEs_ for Claude. While Skills and READMEs can be very useful, they are more so advanced features who are not necessary to set up for simple use.
-
-To use Claude Code you at least need a €20 subscription. This gives you a certain amount of tokens that should be enough unless you use it a lot on large projects. Most students use this €20 subscription.
 
 ## References
 Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
