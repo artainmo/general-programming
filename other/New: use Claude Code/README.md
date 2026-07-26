@@ -56,5 +56,10 @@ Newer students primarily use Claude within their terminal to get explanations ab
 
 Another student uses Claude within VSCode and gives him precise instructions to build new features such as what function to build in what file. He doesn't use _Skills_ or _READMEs_ for Claude. While Skills and READMEs can be very useful, they are more so advanced features who are not necessary to set up for simple use.
 
+### Personal experiences
+It is very simple to use. Simply launch it in your terminal with `claude` and afterwards ask your questions in natural language like you would any LLM, subsequently Claude Code will give clear answers with clear propositions of what to do next (which you can accept or not and he will execute the task and propose subsequent tasks himself).<br>
+He knows your whole project code when you ask a question and is very effective at determining what needs to change in it. Not only that, he also executes changes for you.<br>
+As of now he has been highly useful for me to adapt old projects I don't know anymore, and this without me even needing to customize it with markdown or skill files.
+
 ## References
 Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
