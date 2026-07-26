@@ -9,6 +9,7 @@
 - [How to use](#How-to-use)
   - [How it works](#How-it-works)
   - [How students use it at school 42](#How-students-use-it-at-school-42)
+  - [Personal experiences](#Personal-experiences)
 - [References](#References)
 
 ## Introduction
