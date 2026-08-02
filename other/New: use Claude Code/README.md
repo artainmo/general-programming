@@ -63,7 +63,7 @@ It is very simple to use. Simply launch it in your terminal with `claude` and af
 
 He knows your whole project code when you ask a question and is very effective at determining what needs to change in it. Not only that, he also executes changes for you and can add large amounts of code.
 
-As of now he has been highly useful for me to adapt old projects I don't know anymore, and this without me even needing to customize it with markdown or skill files. For example he also prepared tests and corrected them for a large project in hours which would otherwise have taken me weeks (if not be impossible for me). Claude Code was even able to: test and rectify memory leaks and invalid read/write; launch docker (as long as docker runs on your computer) to test the project in a linux environment and rectify it as needed.
+As of now he has been highly useful for me to adapt old projects I don't know anymore, and this without me even needing to customize it with markdown or skill files. For example he also prepared tests and corrected them for a large project in hours which would otherwise have taken me weeks (if not be impossible for me). Claude Code was even able to: test and rectify memory leaks and invalid read/write; launch docker (as long as docker runs on your computer) to test the project in a linux environment and rectify it as needed; but also explain how to use a project in the README.
 
 ## References
 Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
