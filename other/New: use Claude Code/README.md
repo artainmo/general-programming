@@ -65,5 +65,7 @@ He knows your whole project code when you ask a question and is very effective a
 
 As of now he has been highly useful for me to adapt old projects I don't know anymore, and this without me even needing to customize it with markdown or skill files. For example he also prepared tests and corrected them for a large project in hours which would otherwise have taken me weeks (if not be impossible for me). Claude Code was even able to: test and rectify memory leaks and invalid read/write; launch docker (as long as docker runs on your computer) to test the project in a linux environment and rectify it as needed; but also explain how to use a project in the README.
 
+Sometimes chatGPT cannot resolve a problem but Claude Code can, this may in part be due to Claude Code having access to more information but it might also just be Claude being more intelligent.
+
 ## References
 Learned from 42 Belgium student _edesmed_, _rperez-t_, and briefly others.
